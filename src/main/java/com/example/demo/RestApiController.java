@@ -34,10 +34,10 @@ JdbcTemplate jdbcTemplate;
 			//jdbcTemplate.execute("create table employee (id int, name varchar)");
 			//jdbcTemplate.execute("insert into employee (id, name) values (1, 'A')");  
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
-			String id = null;
+			Integer id = null;
 			String name = null;
 			 for (Map row : rows) {
-				 id = (String) row.get("id");
+				 id = (Integer) row.get("id");
 				 name =  (String) row.get("name");
 			 }
 		return new ResponseEntity<String>(" Id : "+id+", Name: "+name, HttpStatus.OK);

@@ -33,7 +33,7 @@ JdbcTemplate jdbcTemplate;
 		
 			//jdbcTemplate.execute("create table employee (id int, name varchar)");
 			//jdbcTemplate.execute("insert into employee (id, name) values (1, 'A')");  
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select count(*) from employee");
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
 			String id = null;
 			String name = null;
 			 for (Map row : rows) {

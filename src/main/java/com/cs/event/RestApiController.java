@@ -63,7 +63,6 @@ public class RestApiController {
 	
 	@RequestMapping(value = "event", method = RequestMethod.PUT)
 	public String processName(@RequestBody Event event) {
-		
 		Map<String, Object> map = jdbcTemplate.queryForMap("select * from "+tableName+" where "+event.getEventName()+" IS NOT NULL and otp='"+event.getOtp()+"'");
 		if(map == null) {
 			return "OTP is not present please check with Admin.";

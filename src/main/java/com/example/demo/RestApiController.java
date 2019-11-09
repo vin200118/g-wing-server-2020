@@ -31,9 +31,9 @@ JdbcTemplate jdbcTemplate;
 	@RequestMapping(value = "/abc", method = RequestMethod.GET)
 	public ResponseEntity<String> getRestAPI() {
 		
-			//jdbcTemplate.execute("create table employee (id int, name varchar)");
-			//jdbcTemplate.execute("insert into employee (id, name) values (1, 'A')");  
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
+			jdbcTemplate.execute("create table employee1 (id int, name varchar)");
+			jdbcTemplate.execute("insert into employee1 (id, name) values (1, 'Vinayak')");  
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee1");
 			Integer id = null;
 			String name = null;
 			 for (Map row : rows) {

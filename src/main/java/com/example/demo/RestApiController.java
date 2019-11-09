@@ -41,16 +41,11 @@ public class RestApiController {
 	}
 	
 	@RequestMapping(value = "/process/{processName}", method = RequestMethod.GET)
-	public ResponseEntity<String> processName(@PathVariable String processName) {
+	public List<Map<String, Object>> processName(@PathVariable String processName) {
 		
 			jdbcTemplate.execute("insert into employee (id, name) values (1, 'Vinayak123')");  
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
-			Integer id = null;
-			String name = null;
-			 for (Map row : rows) {
-				 id = (Integer) row.get("id");
-				 name =  (String) row.get("name");
-			 }
-		return new ResponseEntity<String>(" Id : "+id+", Name: "+name, HttpStatus.OK);
+			
+		return rows;
 	}
 }

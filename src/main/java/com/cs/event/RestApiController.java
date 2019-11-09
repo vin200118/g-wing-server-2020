@@ -15,6 +15,7 @@ import org.postgresql.jdbc3.Jdbc3SimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,12 +64,14 @@ public class RestApiController {
 	
 	@RequestMapping(value = "event", method = RequestMethod.PUT)
 	public String processName(@RequestBody Event event) {
-		Map<String, Object> map = jdbcTemplate.queryForMap("select * from "+tableName+" where "+event.getEventName()+" IS NOT NULL and otp='"+event.getOtp()+"'");
-		if(map == null) {
+		try {
+			Map<String, Object> map = jdbcTemplate.queryForMap("select * from "+tableName+" where "+event.getEventName()+" IS NOT NULL and otp='"+event.getOtp()+"'");
+			
+			if( map.get(event.getEventName()) != null){
+				return "you have already registered";
+			}
+		}catch(EmptyResultDataAccessException e) {
 			return "OTP is not present please check with Admin.";
-		}
-		if( map.get(event.getEventName()) != null){
-			return "you have already registered";
 		}
 		  	Date date = new Date();  
 		   jdbcTemplate.execute("update "+tableName+" set "+event.getEventName()+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+event.getOtp()+"'");  	

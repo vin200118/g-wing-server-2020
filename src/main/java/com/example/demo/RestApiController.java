@@ -56,13 +56,12 @@ public class RestApiController {
 		return "data inserted for OTP "+otp;
 	}
 	
-	@RequestMapping(value = "process/{processName}/{opt}", method = RequestMethod.GET)
-	public List<Map<String, Object>> processName(@PathVariable String processName,@PathVariable String otp) {
+	@RequestMapping(value = "process/{processName}/{otp}", method = RequestMethod.GET)
+	public String processName(@PathVariable String processName,@PathVariable String otp) {
 		  	Date date = new Date();  
 		   jdbcTemplate.execute("update "+tableName+" set "+processName+"="+formatter.format(date)+" where otp="+otp);  
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
-			
-		return rows;
+				
+		return processName;
 	}
 	@RequestMapping(value = "data/{processName}", method = RequestMethod.GET)
 	public List<Map<String, Object>> getData(@PathVariable String processName) {

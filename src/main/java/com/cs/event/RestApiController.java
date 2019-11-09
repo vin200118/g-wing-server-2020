@@ -63,19 +63,25 @@ public class RestApiController {
 	}
 	
 	@RequestMapping(value = "event", method = RequestMethod.PUT)
-	public String processName(@RequestBody Event event) {
+	public ResponseEntity<String> processName(@RequestBody Event event) {
 		try {
 			Map<String, Object> map = jdbcTemplate.queryForMap("select * from "+tableName+" where "+event.getEventName()+" IS NOT NULL and otp='"+event.getOtp()+"'");
 			
-			if( map.get(event.getEventName()) != null){
-				return "you have already registered";
+			if(map.get(event.getEventName()) != null){
+				return new ResponseEntity<>(
+						"you have already registered", 
+				          HttpStatus.BAD_REQUEST);
 			}
 		}catch(EmptyResultDataAccessException e) {
-			return "OTP is not present please check with Admin.";
+			return new ResponseEntity<>(
+					"OTP is not present please check with Admin.", 
+			          HttpStatus.BAD_REQUEST);
 		}
 		  	Date date = new Date();  
 		   jdbcTemplate.execute("update "+tableName+" set "+event.getEventName()+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+event.getOtp()+"'");  	
-		return "you have registered successfully.";
+		return new ResponseEntity<>(
+				"you have registered successfully.", 
+		          HttpStatus.OK);
 	}
 	@RequestMapping(value = "data/eventName/{eventName}", method = RequestMethod.GET)
 	public List<Map<String, Object>> getData(@PathVariable String eventName) {

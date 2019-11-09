@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.cs.event;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.cs.event.model.Event;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/")
@@ -52,27 +54,27 @@ public class RestApiController {
 		return "table created successfully.";
 	}
 	
-	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.GET)
+	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.POST)
 	public String insertOTP(@PathVariable String otp) {
 		
 			jdbcTemplate.execute("insert into "+tableName+" (otp) values("+otp+")");
 		return "data inserted for OTP "+otp;
 	}
 	
-	@RequestMapping(value = "process/{processName}/{otp}", method = RequestMethod.GET)
-	public String processName(@PathVariable String processName,@PathVariable String otp) {
+	@RequestMapping(value = "event", method = RequestMethod.PUT)
+	public String processName(@RequestBody Event event) {
 		  	Date date = new Date();  
-		   jdbcTemplate.execute("update "+tableName+" set "+processName+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+otp+"'");  
+		   jdbcTemplate.execute("update "+tableName+" set "+event.getEventName()+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+event.getOtp()+"'");  
 				
-		return processName;
+		return event.getEventName();
 	}
-	@RequestMapping(value = "data/processName/{processName}", method = RequestMethod.GET)
-	public List<Map<String, Object>> getData(@PathVariable String processName) {
+	@RequestMapping(value = "data/eventName/{eventName}", method = RequestMethod.GET)
+	public List<Map<String, Object>> getData(@PathVariable String eventName) {
 		List<Map<String, Object>> rows = new ArrayList<>();
-			if("all".equalsIgnoreCase(processName)) {
+			if("all".equalsIgnoreCase(eventName)) {
 			  	 rows = jdbcTemplate.queryForList("select * from "+tableName+"");
 			}else {
-				rows = jdbcTemplate.queryForList("select * from "+tableName+" where "+processName+" IS NOT NULL");
+				rows = jdbcTemplate.queryForList("select * from "+tableName+" where "+eventName+" IS NOT NULL");
 			}
 		return rows;
 	}

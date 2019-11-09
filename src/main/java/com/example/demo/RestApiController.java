@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -74,6 +75,11 @@ public class RestApiController {
 				rows = jdbcTemplate.queryForList("select * from "+tableName+" where "+processName+" IS NOT NULL");
 			}
 		return rows;
+	}
+	
+	@RequestMapping(value = "data/{otp}", method = RequestMethod.GET)
+	public Map<String, Object> getOtpData(@PathVariable String otp) {
+			return jdbcTemplate.queryForMap("select * from "+tableName+"");
 	}
 	
 	public static String formatDateToString(Date date, String format,

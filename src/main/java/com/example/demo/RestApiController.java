@@ -66,7 +66,7 @@ public class RestApiController {
 				
 		return processName;
 	}
-	@RequestMapping(value = "data/{processName}", method = RequestMethod.GET)
+	@RequestMapping(value = "data/processName/{processName}", method = RequestMethod.GET)
 	public List<Map<String, Object>> getData(@PathVariable String processName) {
 		List<Map<String, Object>> rows = new ArrayList<>();
 			if("all".equalsIgnoreCase(processName)) {
@@ -77,7 +77,7 @@ public class RestApiController {
 		return rows;
 	}
 	
-	@RequestMapping(value = "data/{otp}", method = RequestMethod.GET)
+	@RequestMapping(value = "data/otp/{otp}", method = RequestMethod.GET)
 	public Map<String, Object> getOtpData(@PathVariable String otp) {
 			return jdbcTemplate.queryForMap("select * from "+tableName+"");
 	}

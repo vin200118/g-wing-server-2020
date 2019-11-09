@@ -42,17 +42,17 @@ public class RestApiController {
 	
 	@RequestMapping(value = "/create-table/{tableName}", method = RequestMethod.GET)
 	public String getRestAPI(@PathVariable String tableName) {
-			jdbcTemplate.execute("create table "+tableName+" (opt VARCHAR (10) PRIMARY KEY,"
-															+ "registration VARCHAR (30), "
-															+ "gift VARCHAR (30),"
-															+ "lunch VARCHAR (30) ");
+			jdbcTemplate.execute("create table "+tableName+" (otp VARCHAR(10) PRIMARY KEY,"
+															+ "registration VARCHAR(30), "
+															+ "gift VARCHAR(30),"
+															+ "lunch VARCHAR(30)); ");
 		return "table created";
 	}
 	
 	@RequestMapping(value = "/process/{processName}/{opt}", method = RequestMethod.GET)
-	public List<Map<String, Object>> processName(@PathVariable String processName,@PathVariable String opt) {
+	public List<Map<String, Object>> processName(@PathVariable String processName,@PathVariable String otp) {
 		  	Date date = new Date();  
-		   jdbcTemplate.execute("update "+tableName+" set "+processName+"="+formatter.format(date)+" where otp="+opt);  
+		   jdbcTemplate.execute("update "+tableName+" set "+processName+"="+formatter.format(date)+" where otp="+otp);  
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
 			
 		return rows;

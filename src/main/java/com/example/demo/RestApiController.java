@@ -52,7 +52,7 @@ public class RestApiController {
 	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.GET)
 	public String insertOTP(@PathVariable String otp) {
 		
-			jdbcTemplate.execute("insert into "+tableName+" (otp) values("+otp+"");
+			jdbcTemplate.execute("insert into "+tableName+" (otp) values("+otp+")");
 		return "data inserted for OTP "+otp;
 	}
 	

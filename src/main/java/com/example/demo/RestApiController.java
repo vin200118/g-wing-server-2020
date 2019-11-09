@@ -22,18 +22,29 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/")
 public class RestApiController {
-@Autowired
-JdbcTemplate jdbcTemplate;
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
-	@RequestMapping(value = "/abc", method = RequestMethod.GET)
-	public ResponseEntity<String> getRestAPI() {
+	@RequestMapping(value = "delete-table/{tableName}", method = RequestMethod.GET)
+	public String deleteTable(@PathVariable String tableName) {
+		jdbcTemplate.execute("DROP TABLE "+tableName);
+		return "drop data suceessfully";
+	}
+	
+	@RequestMapping(value = "/create-table/{tableName}", method = RequestMethod.GET)
+	public String getRestAPI(@PathVariable String tableName) {
+			jdbcTemplate.execute("create table "+tableName+" (id int, name varchar)");
+		return "tableCreated";
+	}
+	
+	@RequestMapping(value = "/process/{processName}", method = RequestMethod.GET)
+	public ResponseEntity<String> processName(@PathVariable String processName) {
 		
-			jdbcTemplate.execute("create table employee1 (id int, name varchar)");
-			jdbcTemplate.execute("insert into employee1 (id, name) values (1, 'Vinayak')");  
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee1");
+			jdbcTemplate.execute("insert into employee (id, name) values (1, 'Vinayak123')");  
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList("select * from employee");
 			Integer id = null;
 			String name = null;
 			 for (Map row : rows) {

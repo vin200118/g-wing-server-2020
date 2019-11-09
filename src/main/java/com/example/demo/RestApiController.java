@@ -40,7 +40,7 @@ public class RestApiController {
 		return "drop data suceessfully";
 	}
 	
-	@RequestMapping(value = "/create-table/{tableName}", method = RequestMethod.GET)
+	@RequestMapping(value = "create-table/{tableName}", method = RequestMethod.GET)
 	public String getRestAPI(@PathVariable String tableName) {
 			jdbcTemplate.execute("create table "+tableName+" (otp VARCHAR(10) PRIMARY KEY,"
 															+ "registration VARCHAR(30), "
@@ -49,13 +49,14 @@ public class RestApiController {
 		return "table created";
 	}
 	
-	@RequestMapping(value = "/insert-otp/{otp}", method = RequestMethod.GET)
+	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.GET)
 	public String insertOTP(@PathVariable String otp) {
-			jdbcTemplate.execute("insert into table "+tableName+" (otp) values("+otp+"");
+		
+			jdbcTemplate.execute("insert into "+tableName+" (otp) values("+otp+"");
 		return "data inserted for OTP "+otp;
 	}
 	
-	@RequestMapping(value = "/process/{processName}/{opt}", method = RequestMethod.GET)
+	@RequestMapping(value = "process/{processName}/{opt}", method = RequestMethod.GET)
 	public List<Map<String, Object>> processName(@PathVariable String processName,@PathVariable String otp) {
 		  	Date date = new Date();  
 		   jdbcTemplate.execute("update "+tableName+" set "+processName+"="+formatter.format(date)+" where otp="+otp);  
@@ -63,7 +64,7 @@ public class RestApiController {
 			
 		return rows;
 	}
-	@RequestMapping(value = "/data/{processName}", method = RequestMethod.GET)
+	@RequestMapping(value = "data/{processName}", method = RequestMethod.GET)
 	public List<Map<String, Object>> getData(@PathVariable String processName) {
 		List<Map<String, Object>> rows = new ArrayList<>();
 			if("all".equalsIgnoreCase(processName)) {

@@ -49,6 +49,12 @@ public class RestApiController {
 		return "table created";
 	}
 	
+	@RequestMapping(value = "/insert-otp/{otp}", method = RequestMethod.GET)
+	public String insertOTP(@PathVariable String otp) {
+			jdbcTemplate.execute("insert into table "+tableName+" (otp) values("+otp+"");
+		return "data inserted for OTP "+otp;
+	}
+	
 	@RequestMapping(value = "/process/{processName}/{opt}", method = RequestMethod.GET)
 	public List<Map<String, Object>> processName(@PathVariable String processName,@PathVariable String otp) {
 		  	Date date = new Date();  

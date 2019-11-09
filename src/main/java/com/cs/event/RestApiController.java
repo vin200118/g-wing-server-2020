@@ -63,10 +63,13 @@ public class RestApiController {
 	
 	@RequestMapping(value = "event", method = RequestMethod.PUT)
 	public String processName(@RequestBody Event event) {
+		Map<String, Object> map = jdbcTemplate.queryForMap("select * from "+tableName+" where "+event.getEventName()+"IS NOT NULL and otp='"+event.getOtp()+"'");
+		if( map.get(event.getEventName()) != null){
+			return "you have already registered";
+		}
 		  	Date date = new Date();  
-		   jdbcTemplate.execute("update "+tableName+" set "+event.getEventName()+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+event.getOtp()+"'");  
-				
-		return event.getEventName();
+		   jdbcTemplate.execute("update "+tableName+" set "+event.getEventName()+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+event.getOtp()+"'");  	
+		return "you have registered successfully.";
 	}
 	@RequestMapping(value = "data/eventName/{eventName}", method = RequestMethod.GET)
 	public List<Map<String, Object>> getData(@PathVariable String eventName) {

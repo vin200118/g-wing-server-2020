@@ -40,7 +40,7 @@ public class RestApiController {
 	@RequestMapping(value = "delete-table/{tableName}", method = RequestMethod.GET)
 	public String deleteTable(@PathVariable String tableName) {
 		jdbcTemplate.execute("DROP TABLE "+tableName);
-		return "drop data suceessfully";
+		return "drop data suceessfully.";
 	}
 	
 	@RequestMapping(value = "create-table/{tableName}", method = RequestMethod.GET)
@@ -49,7 +49,7 @@ public class RestApiController {
 															+ "registration VARCHAR(30), "
 															+ "gift VARCHAR(30),"
 															+ "lunch VARCHAR(30)); ");
-		return "table created";
+		return "table created successfully.";
 	}
 	
 	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.GET)

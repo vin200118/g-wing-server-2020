@@ -44,7 +44,7 @@ public class RestApiController {
 	public String getRestAPI(@PathVariable String tableName) {
 			jdbcTemplate.execute("create table "+tableName+" (opt VARCHAR (10) PRIMARY KEY,"
 															+ "registration VARCHAR (30), "
-															+ "gift VARCHAR (30),)"
+															+ "gift VARCHAR (30),"
 															+ "lunch VARCHAR (30) ");
 		return "table created";
 	}

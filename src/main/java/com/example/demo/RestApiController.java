@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.postgresql.jdbc3.Jdbc3SimpleDataSource;
 import org.slf4j.Logger;
@@ -59,7 +61,7 @@ public class RestApiController {
 	@RequestMapping(value = "process/{processName}/{otp}", method = RequestMethod.GET)
 	public String processName(@PathVariable String processName,@PathVariable String otp) {
 		  	Date date = new Date();  
-		   jdbcTemplate.execute("update "+tableName+" set "+processName+"="+formatter.format(date)+" where otp="+otp);  
+		   jdbcTemplate.execute("update "+tableName+" set "+processName+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+otp+"'");  
 				
 		return processName;
 	}
@@ -72,5 +74,21 @@ public class RestApiController {
 				rows = jdbcTemplate.queryForList("select * from "+tableName+" where "+processName+" IS NOT NULL");
 			}
 		return rows;
+	}
+	
+	public static String formatDateToString(Date date, String format,
+			String timeZone) {
+		// null check
+		if (date == null) return null;
+		// create SimpleDateFormat object with input format
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		// default system timezone if passed null or empty
+		if (timeZone == null || "".equalsIgnoreCase(timeZone.trim())) {
+			timeZone = Calendar.getInstance().getTimeZone().getID();
+		}
+		// set timezone to SimpleDateFormat
+		sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
+		// return Date in required format with timezone as String
+		return sdf.format(date);
 	}
 }

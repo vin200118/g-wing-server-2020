@@ -88,7 +88,7 @@ public class RestApiController {
 			
 			if(map.get(event.getEventName()) != null){
 				return new ResponseEntity<>(
-						"You have already used opt for "+event.getEventName(), 
+						"You have already used otp for "+event.getEventName(), 
 				          HttpStatus.BAD_REQUEST);
 			}
 		}catch(EmptyResultDataAccessException e) {

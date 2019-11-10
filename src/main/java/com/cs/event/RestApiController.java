@@ -97,7 +97,7 @@ public class RestApiController {
 		  	Date date = new Date();  
 		   jdbcTemplate.execute("update "+tableName+" set "+event.getEventName()+"='"+formatDateToString(date, "dd MMM yyyy hh:mm:ss a", "IST")+"' where otp='"+event.getOtp()+"'");  	
 		return new ResponseEntity<>(
-				"you have registered successfully", 
+				"OTP "+ event.getOtp()+" is registered successfully", 
 		          HttpStatus.OK);
 	}
 	@RequestMapping(value = "data/eventName/{eventName}", method = RequestMethod.GET)

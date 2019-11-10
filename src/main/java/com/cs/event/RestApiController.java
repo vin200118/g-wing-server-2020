@@ -65,7 +65,7 @@ public class RestApiController {
 	@RequestMapping(value = "insert-otp/multi/{count}", method = RequestMethod.POST)
 	public String insertOtpMulti(@PathVariable int count) {
 			for(int i=1001;i<(1001+count);i++) {
-				jdbcTemplate.execute("insert into "+tableName+" (otp) values("+i+")");
+				jdbcTemplate.execute("insert into "+tableName+" (otp) values("+count+")");
 			}
 		return "data inserted for OTP "+count;
 	}
@@ -123,7 +123,7 @@ public class RestApiController {
 					"OTP is not present please check with Admin.", 
 			          HttpStatus.BAD_REQUEST);
 		}
-			return new ResponseEntity<>(jdbcTemplate.queryForMap("select * from "+tableName+""), 
+			return new ResponseEntity<>(jdbcTemplate.queryForMap("select * from "+tableName+" where otp='"+otp+"'"), 
 			          HttpStatus.OK);
 	}
 	

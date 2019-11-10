@@ -62,6 +62,14 @@ public class RestApiController {
 		return "data inserted for OTP "+otp;
 	}
 	
+	@RequestMapping(value = "insert-otp/multi/{count}", method = RequestMethod.POST)
+	public String insertOtpMulti(@PathVariable int count) {
+			for(int i=1001;i<(1001+count);i++) {
+				jdbcTemplate.execute("insert into "+tableName+" (otp) values("+i+")");
+			}
+		return "data inserted for OTP "+count;
+	}
+	
 	@RequestMapping(value = "event", method = RequestMethod.PUT)
 	public ResponseEntity<String> processName(@RequestBody Event event) {
 		
@@ -80,7 +88,7 @@ public class RestApiController {
 			
 			if(map.get(event.getEventName()) != null){
 				return new ResponseEntity<>(
-						"You have already used opt for"+event.getEventName(), 
+						"You have already used opt for "+event.getEventName(), 
 				          HttpStatus.BAD_REQUEST);
 			}
 		}catch(EmptyResultDataAccessException e) {
@@ -104,8 +112,19 @@ public class RestApiController {
 	}
 	
 	@RequestMapping(value = "data/otp/{otp}", method = RequestMethod.GET)
-	public Map<String, Object> getOtpData(@PathVariable String otp) {
-			return jdbcTemplate.queryForMap("select * from "+tableName+"");
+	public ResponseEntity<?> getOtpData(@PathVariable String otp) {
+		
+		try {
+			
+			jdbcTemplate.queryForMap("select * from "+tableName+" where otp='"+otp+"'");
+			
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<>(
+					"OTP is not present please check with Admin.", 
+			          HttpStatus.BAD_REQUEST);
+		}
+			return new ResponseEntity<>(jdbcTemplate.queryForMap("select * from "+tableName+""), 
+			          HttpStatus.OK);
 	}
 	
 	public static String formatDateToString(Date date, String format,

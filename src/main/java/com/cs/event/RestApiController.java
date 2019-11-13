@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.postgresql.jdbc3.Jdbc3SimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.cs.event.model.Event;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 @CrossOrigin
 @RestController
@@ -110,6 +116,27 @@ public class RestApiController {
 			}
 		return rows;
 	}
+	
+    @GetMapping("/export-data")
+    public void exportCSV(HttpServletResponse response) throws Exception {
+        //set file name and content type
+        String filename = "users.csv";
+
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+
+        //create a csv writer
+        StatefulBeanToCsv<Map<String, Object>> writer = new StatefulBeanToCsvBuilder<Map<String, Object>>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(false)
+                .build();
+
+        //write all users to csv file
+        writer.write(jdbcTemplate.queryForList("select * from "+tableName+""));
+				
+    }
 	
 	@RequestMapping(value = "data/otp/{otp}", method = RequestMethod.GET)
 	public ResponseEntity<?> getOtpData(@PathVariable String otp) {

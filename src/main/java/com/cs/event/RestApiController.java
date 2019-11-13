@@ -33,6 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 
 import com.cs.event.model.Event;
+import com.cs.event.model.EventDetails;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -124,7 +125,7 @@ public class RestApiController {
         response.setHeader("Content-Disposition", "attachment; file=event.csv");
     	
     	String[] CSV_HEADER = { "otp", "registration", "gift", "lunch" };
-        StatefulBeanToCsv<Map<String, Object>> beanToCsv = null;
+        StatefulBeanToCsv<EventDetails> beanToCsv = null;
         try (
           CSVWriter csvWriter = new CSVWriter(response.getWriter(),
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -135,25 +136,36 @@ public class RestApiController {
           csvWriter.writeNext(CSV_HEADER);
           
           // write List of Objects
-          ColumnPositionMappingStrategy<Map<String, Object>> mappingStrategy = 
-                  new ColumnPositionMappingStrategy<Map<String, Object>>();
+          ColumnPositionMappingStrategy<EventDetails> mappingStrategy = 
+                  new ColumnPositionMappingStrategy<EventDetails>();
           
-          //mappingStrategy.setType(Map.class);
+          mappingStrategy.setType(EventDetails.class);
           mappingStrategy.setColumnMapping(CSV_HEADER);
           
-          beanToCsv = new StatefulBeanToCsvBuilder<Map<String, Object>>(response.getWriter())
+          beanToCsv = new StatefulBeanToCsvBuilder<EventDetails>(response.getWriter())
               .withMappingStrategy(mappingStrategy)
                       .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
                       .build();
      
           List<Map<String, Object>>rows = jdbcTemplate.queryForList("select * from "+tableName+"");
           System.out.println("rows count >>> "+rows.size());
+          List<EventDetails> list = new ArrayList<EventDetails>();
           for(Map<String, Object> map : rows) {
-	          for (Map.Entry<String, Object> entry : map.entrySet()){
-	        	  System.out.println("key : "+entry.getKey()+" value : "+entry.getValue());
-	          }
+        	  EventDetails eventDetail = new EventDetails();
+		          for (Map.Entry<String, Object> entry : map.entrySet()){
+		        	  if(entry.getKey().equals("otp")){
+		        		  eventDetail.setOpt(""+entry.getValue());
+		        	  }else if(entry.getKey().equals("registration")){
+		        		  eventDetail.setRegistration(""+entry.getValue());
+		        	  }else if(entry.getKey().equals("gift")){
+		        		  eventDetail.setGift(""+entry.getValue());
+		        	  }else {
+		        		  eventDetail.setLunch(""+entry.getValue());
+		        	  }
+		          }
+	          list.add(eventDetail);
           }
-          beanToCsv.write(rows);
+          beanToCsv.write(list);
           
           System.out.println("Write CSV using BeanToCsv successfully!");      
         }catch (Exception e) {

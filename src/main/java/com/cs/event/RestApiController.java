@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
 
 import com.cs.event.model.Event;
 import com.opencsv.CSVWriter;
@@ -117,26 +118,48 @@ public class RestApiController {
 		return rows;
 	}
 	
-    @GetMapping("/export-data")
+    @GetMapping("export-data")
     public void exportCSV(HttpServletResponse response) throws Exception {
-        //set file name and content type
-        String filename = "event.csv";
-
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
-
-        //create a csv writer
-        StatefulBeanToCsv<Map<String, Object>> writer = new StatefulBeanToCsvBuilder<Map<String, Object>>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
-        List<Map<String, Object>> rows = new ArrayList<>();
-        rows = jdbcTemplate.queryForList("select * from "+tableName+"");
-        System.out.println("rows count >>> "+rows.size());
-        writer.write(rows);
-        //write all users to csv file
+    	response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=event.csv");
+    	
+    	String[] CSV_HEADER = { "otp", "registration", "gift", "lunch" };
+        StatefulBeanToCsv<Map<String, Object>> beanToCsv = null;
+        try (
+          CSVWriter csvWriter = new CSVWriter(response.getWriter(),
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+        ){
+          csvWriter.writeNext(CSV_HEADER);
+          
+          // write List of Objects
+          ColumnPositionMappingStrategy<Map<String, Object>> mappingStrategy = 
+                  new ColumnPositionMappingStrategy<Map<String, Object>>();
+          
+          //mappingStrategy.setType(Map.class);
+          mappingStrategy.setColumnMapping(CSV_HEADER);
+          
+          beanToCsv = new StatefulBeanToCsvBuilder<Map<String, Object>>(response.getWriter())
+              .withMappingStrategy(mappingStrategy)
+                      .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                      .build();
+     
+          List<Map<String, Object>>rows = jdbcTemplate.queryForList("select * from "+tableName+"");
+          System.out.println("rows count >>> "+rows.size());
+          for(Map<String, Object> map : rows) {
+	          for (Map.Entry<String, Object> entry : map.entrySet()){
+	        	  System.out.println("key : "+entry.getKey()+" value : "+entry.getValue());
+	          }
+          }
+          beanToCsv.write(rows);
+          
+          System.out.println("Write CSV using BeanToCsv successfully!");      
+        }catch (Exception e) {
+          System.out.println("Writing CSV error!");
+          e.printStackTrace();
+        }
       
 				
     }

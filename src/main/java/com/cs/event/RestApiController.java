@@ -120,7 +120,7 @@ public class RestApiController {
     @GetMapping("/export-data")
     public void exportCSV(HttpServletResponse response) throws Exception {
         //set file name and content type
-        String filename = "users.csv";
+        String filename = "event.csv";
 
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,

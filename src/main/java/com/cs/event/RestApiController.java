@@ -132,9 +132,12 @@ public class RestApiController {
                 .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
                 .withOrderedResults(false)
                 .build();
-
+        List<Map<String, Object>> rows = new ArrayList<>();
+        rows = jdbcTemplate.queryForList("select * from "+tableName+"");
+        System.out.println("rows count >>> "+rows.size());
+        writer.write(rows);
         //write all users to csv file
-        writer.write(jdbcTemplate.queryForList("select * from "+tableName+""));
+      
 				
     }
 	

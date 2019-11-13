@@ -119,7 +119,7 @@ public class RestApiController {
 		return rows;
 	}
 	
-    @GetMapping("export-data")
+    @GetMapping("export-data.csv")
     public void exportCSV(HttpServletResponse response) throws Exception {
     	 response.setContentType("text/csv");
     	    response.setHeader("Content-Disposition", "attachment; file=customers.csv");

@@ -13,6 +13,8 @@ import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.postgresql.jdbc3.Jdbc3SimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +32,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
+
 
 import com.cs.event.model.Event;
 import com.cs.event.model.EventDetails;
-import com.opencsv.CSVWriter;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
 
 @CrossOrigin
 @RestController
@@ -121,59 +121,23 @@ public class RestApiController {
 	
     @GetMapping("export-data")
     public void exportCSV(HttpServletResponse response) throws Exception {
-    	response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; file=event.csv");
-    	
-    	String[] CSV_HEADER = { "otp", "registration", "gift", "lunch" };
-        StatefulBeanToCsv<EventDetails> beanToCsv = null;
-        try (
-          CSVWriter csvWriter = new CSVWriter(response.getWriter(),
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
-        ){
-          csvWriter.writeNext(CSV_HEADER);
-          
-          // write List of Objects
-          ColumnPositionMappingStrategy<EventDetails> mappingStrategy = 
-                  new ColumnPositionMappingStrategy<EventDetails>();
-          
-          mappingStrategy.setType(EventDetails.class);
-          mappingStrategy.setColumnMapping(CSV_HEADER);
-          
-          beanToCsv = new StatefulBeanToCsvBuilder<EventDetails>(response.getWriter())
-              .withMappingStrategy(mappingStrategy)
-                      .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                      .build();
+    	 response.setContentType("text/csv");
+    	    response.setHeader("Content-Disposition", "attachment; file=customers.csv");
      
           List<Map<String, Object>>rows = jdbcTemplate.queryForList("select * from "+tableName+"");
-          System.out.println("rows count >>> "+rows.size());
-          List<EventDetails> list = new ArrayList<EventDetails>();
-          for(Map<String, Object> map : rows) {
-        	  EventDetails eventDetail = new EventDetails();
-		          for (Map.Entry<String, Object> entry : map.entrySet()){
-		        	  if(entry.getKey().equals("otp")){
-		        		  eventDetail.setOpt(""+entry.getValue());
-		        	  }else if(entry.getKey().equals("registration")){
-		        		  eventDetail.setRegistration(""+entry.getValue());
-		        	  }else if(entry.getKey().equals("gift")){
-		        		  eventDetail.setGift(""+entry.getValue());
-		        	  }else {
-		        		  eventDetail.setLunch(""+entry.getValue());
-		        	  }
-		          }
-	          list.add(eventDetail);
-          }
-          beanToCsv.write(list);
-          
-          System.out.println("Write CSV using BeanToCsv successfully!");      
-        }catch (Exception e) {
-          System.out.println("Writing CSV error!");
-          e.printStackTrace();
-        }
-      
-				
+          try (CSVPrinter csvPrinter = new CSVPrinter(response.getWriter(), CSVFormat.DEFAULT
+        	                      .withHeader("OTP", "REGISTRATION", "GIFT", "LUNCH"));
+        		  ) {
+        	  
+        	  for(Map<String, Object> map : rows) {
+        		  List<String> data = new ArrayList<String>();
+    		          for (Map.Entry<String, Object> entry : map.entrySet()){
+    		        	  data.add(""+entry.getValue());       
+    		          }
+    		          csvPrinter.printRecord(data);
+    	         }
+        	  csvPrinter.flush();
+        	   }
     }
 	
 	@RequestMapping(value = "data/otp/{otp}", method = RequestMethod.GET)

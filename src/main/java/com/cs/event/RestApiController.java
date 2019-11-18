@@ -63,10 +63,19 @@ public class RestApiController {
 		return "table created successfully.";
 	}
 	
-	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.POST)
+	@RequestMapping(value = "insert-otp/{otp}", method = RequestMethod.GET)
 	public String insertOTP(@PathVariable String otp) {
 		
 			jdbcTemplate.execute("insert into "+tableName+" (otp) values("+otp+")");
+		return "data inserted for OTP "+otp;
+	}
+	
+	@RequestMapping(value = "insert-otp", method = RequestMethod.POST)
+	public String insertOTP(@RequestBody String[] otp) {
+			for(String otp1:otp) {
+				jdbcTemplate.execute("insert into "+tableName+" (otp) values("+otp1+")");
+			}
+			
 		return "data inserted for OTP "+otp;
 	}
 	

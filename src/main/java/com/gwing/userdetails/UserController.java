@@ -26,14 +26,26 @@ public class UserController {
 	UserService userService;
 	
 	@RequestMapping(value = "user", method = RequestMethod.POST)
-	public String saveUser(@RequestBody UserModel user) {
-		userService.save(user);
-		return "User Registered Successfully";
+	public ResponseEntity<?> saveUser(@RequestBody UserModel user) {
+		try {
+			userService.getDetails(user.getUsername());
+		}catch(EmptyResultDataAccessException e) {
+			userService.save(user);
+			return new ResponseEntity<String>("User Registered Successfully", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Username is already exists,try another username", HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value = "user/{username}", method = RequestMethod.GET)
-	public Map<String, Object> saveUser(@PathVariable String username) {
-		return userService.getDetails(username);
+	public ResponseEntity<?> saveUser(@PathVariable String username) {
+		try {
+			return new ResponseEntity<Map<String, Object>>(userService.getDetails(username), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"username does not exists", 
+			          HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(value = "user-login", method = RequestMethod.POST)

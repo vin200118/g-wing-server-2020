@@ -26,6 +26,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@CrossOrigin
 	@RequestMapping(value = "user", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserModel user) {
 		try {
@@ -38,6 +39,7 @@ public class UserController {
 		return new ResponseEntity<String>("Username is already exists,try another username", HttpStatus.BAD_REQUEST);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "user", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateUser(@RequestBody UserModel user) {
 		
@@ -53,6 +55,7 @@ public class UserController {
 		
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "role", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateRole(@RequestBody UserModel user) {
 		
@@ -66,6 +69,7 @@ public class UserController {
 				
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "user/{username}", method = RequestMethod.GET)
 	public ResponseEntity<?> saveUser(@PathVariable String username) {
 		try {
@@ -77,6 +81,7 @@ public class UserController {
 		}
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public ResponseEntity<?> allUser() {
 		try {
@@ -88,6 +93,7 @@ public class UserController {
 		}
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "user-login", method = RequestMethod.POST)
 	public ResponseEntity<?> userLogin(@RequestBody UserModel user) {
 		try {

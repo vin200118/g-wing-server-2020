@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class UserController {
 	UserService userService;
 	
 	@RequestMapping(value = "user", method = RequestMethod.POST)
-	public String saveUser(UserModel user) {
+	public String saveUser(@RequestBody UserModel user) {
 		userService.save(user);
 		return "User Registered Successfully";
 	}
@@ -36,7 +37,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "user-login", method = RequestMethod.POST)
-	public ResponseEntity<String> userLogin(UserModel user) {
+	public ResponseEntity<String> userLogin(@RequestBody UserModel user) {
 		try {
 			 userService.isUserExists(user);
 		}catch(EmptyResultDataAccessException e) {

@@ -18,7 +18,7 @@ public class UserRepository {
 
 	public void save(UserModel user) {
 		jdbcTemplate.execute("INSERT INTO user_details "
-				+ "(username,password,ful_name,flat_no,contact_no1,contact_no2) "
+				+ "(username,password,full_name,flat_no,contact_no1,contact_no2) "
 				+ "VALUES('"+user.getUsername()+"',"+
 				"'"+user.getPassword()+"',"+	
 				"'"+user.getFullName()+"',"+

@@ -40,7 +40,7 @@ import com.cs.event.model.EventDetails;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/deprecated/")
 public class RestApiController {
 	@Autowired
 	JdbcTemplate jdbcTemplate;

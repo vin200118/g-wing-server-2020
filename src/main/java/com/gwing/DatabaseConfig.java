@@ -1,4 +1,4 @@
-package com.cs.event;
+package com.gwing;
 
 import com.zaxxer.hikari.*;
 import org.springframework.beans.factory.annotation.Value;

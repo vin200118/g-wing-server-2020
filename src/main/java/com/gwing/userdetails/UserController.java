@@ -1,4 +1,4 @@
-package gwing.userdetails;
+package com.gwing.userdetails;
 
 import java.util.Map;
 

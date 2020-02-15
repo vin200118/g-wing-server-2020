@@ -1,4 +1,4 @@
-package gwing.userdetails;
+package com.gwing.userdetails;
 
 public class UserModel {
 	private int id;

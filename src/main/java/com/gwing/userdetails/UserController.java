@@ -49,15 +49,15 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "user-login", method = RequestMethod.POST)
-	public ResponseEntity<String> userLogin(@RequestBody UserModel user) {
+	public ResponseEntity<?> userLogin(@RequestBody UserModel user) {
 		try {
-			 userService.isUserExists(user);
+			return new ResponseEntity<Map<String, Object>>(userService.isUserExists(user), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
 			return new ResponseEntity<>(
 					"Username and password are incorrect", 
 			          HttpStatus.UNAUTHORIZED);
 		}	
-		return new ResponseEntity<>("User logged in Successfully",HttpStatus.OK);
+		
 	}
 	
 

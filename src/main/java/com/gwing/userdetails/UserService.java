@@ -19,8 +19,8 @@ public class UserService {
 		return userRepository.getDetails(username);
 	}
 
-	public void isUserExists(UserModel user) {
-		 userRepository.getDetails(user);
+	public Map<String, Object> isUserExists(UserModel user) {
+		 return userRepository.getDetails(user);
 	}
 
 }

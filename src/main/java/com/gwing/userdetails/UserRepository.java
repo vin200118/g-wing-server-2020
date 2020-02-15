@@ -51,7 +51,10 @@ public class UserRepository {
 	}
 
 	public Map<String, Object> getDetails(UserModel user) {
-		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and password='"+user.getPassword()+"'");
+		Map<String, Object> userDetails = jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and password='"+user.getPassword()+"'");
+		Map<String, Object> userRole = jdbcTemplate.queryForMap("SELECT * FROM role WHERE user_id= '"+userDetails.get("id")+"'");
+		userDetails.putAll(userRole);
+		return userDetails;
 	}
 
 }

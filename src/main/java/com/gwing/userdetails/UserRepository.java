@@ -1,5 +1,6 @@
 package com.gwing.userdetails;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -79,8 +80,8 @@ public class UserRepository {
 		
 	}
 
-	public Map<String, Object> getAllUser() {
-		return jdbcTemplate.queryForMap("SELECT * FROM user_details");
+	public List<Map<String, Object>> getAllUser() {
+		return jdbcTemplate.queryForList("SELECT * FROM user_details");
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.gwing.userdetails;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -79,10 +80,10 @@ public class UserController {
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public ResponseEntity<?> allUser() {
 		try {
-			return new ResponseEntity<Map<String, Object>>(userService.getAllUser(), HttpStatus.OK);
+			return new ResponseEntity<List<Map<String, Object>>>(userService.getAllUser(), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
 			return new ResponseEntity<String>(
-					"User details not found", 
+					"User list is empty", 
 			          HttpStatus.BAD_REQUEST);
 		}
 	}

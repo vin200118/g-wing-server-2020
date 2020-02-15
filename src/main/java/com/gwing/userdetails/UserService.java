@@ -1,5 +1,6 @@
 package com.gwing.userdetails;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,12 @@ public class UserService {
 		userRepository.updateRole(user);
 	}
 
-	public Map<String, Object> getAllUser() {
-		return userRepository.getAllUser();
+	public List<Map<String, Object>> getAllUser() {
+		List<Map<String, Object>> userList = userRepository.getAllUser();
+		for(Map<String, Object> map : userList) {
+			map.remove("password");
+		}
+		return userList;
 	}
 
 }

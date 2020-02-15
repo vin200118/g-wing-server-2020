@@ -45,6 +45,10 @@ public class UserRepository {
 	private Map<String, Object> getUserDetails(String username){
 		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+username+"'");
 	} 
+	public Map<String, Object> getUserDetailsToCheckUpdate(UserModel user){
+		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and "
+				+ "id!="+user.getId());
+	} 
 
 	public Map<String, Object> getDetails(String username) {
 		return getUserDetails(username);

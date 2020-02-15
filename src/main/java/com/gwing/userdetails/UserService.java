@@ -22,7 +22,10 @@ public class UserService {
 	public Map<String, Object> isUserExists(UserModel user) {
 		 return userRepository.getDetails(user);
 	}
-
+	public Map<String, Object> getUserDetailsToCheckUpdate(UserModel user) {
+		 return userRepository.getUserDetailsToCheckUpdate(user);
+	}
+	
 	public void update(UserModel user) {
 		userRepository.update(user);	
 	}

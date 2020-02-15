@@ -39,8 +39,17 @@ public class UserController {
 	
 	@RequestMapping(value = "user", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateUser(@RequestBody UserModel user) {
-		userService.update(user);
-		return new ResponseEntity<String>("User details updated Successfully", HttpStatus.OK);
+		
+		try {
+			userService.getUserDetailsToCheckUpdate(user);
+		}catch(EmptyResultDataAccessException e) {
+			userService.update(user);
+			return new ResponseEntity<String>("User details updated Successfully", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Username is already exists,try another username", HttpStatus.BAD_REQUEST);
+		
+		
 	}
 	
 	@RequestMapping(value = "user/{username}", method = RequestMethod.GET)

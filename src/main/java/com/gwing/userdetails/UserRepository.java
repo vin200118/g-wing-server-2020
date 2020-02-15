@@ -18,7 +18,7 @@ public class UserRepository {
 
 	public void save(UserModel user) {
 		jdbcTemplate.execute("INSERT INTO user_details "
-				+ "(username,password,fullName,flatNo,contactNo1,contactNo2) "
+				+ "(username,password,ful_name,flat_no,contact_no1,contact_no2) "
 				+ "VALUES('"+user.getUsername()+"',"+
 				"'"+user.getPassword()+"',"+	
 				"'"+user.getFullName()+"',"+
@@ -32,7 +32,7 @@ public class UserRepository {
 			
 			if(map!= null){
 				jdbcTemplate.execute("INSERT INTO role "
-						+ "(userId,roleName) "
+						+ "(user_id,role_name) "
 						+ "VALUES("+Integer.parseInt(""+map.get("id"))+",'user');");
 			}
 		}catch(EmptyResultDataAccessException e) {
@@ -56,7 +56,7 @@ public class UserRepository {
 
 	public Map<String, Object> getDetails(UserModel user) {
 		Map<String, Object> userDetails = jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and password='"+user.getPassword()+"'");
-		Map<String, Object> userRole = jdbcTemplate.queryForMap("SELECT * FROM role WHERE userId= '"+userDetails.get("id")+"'");
+		Map<String, Object> userRole = jdbcTemplate.queryForMap("SELECT * FROM role WHERE user_id= '"+userDetails.get("id")+"'");
 		userDetails.putAll(userRole);
 		return userDetails;
 	}
@@ -65,17 +65,17 @@ public class UserRepository {
 		jdbcTemplate.execute("UPDATE user_details SET "
 				+ "username='"+user.getUsername()+"',"
 				+ "password='"+user.getPassword()+"',"
-				+ "fullName='"+user.getFullName()+"',"
-				+ "flatNo='"+user.getFlatNo()+"',"
-				+ "contactNo1='"+user.getContactNo1()+"',"
-				+ "contactNo2='"+user.getContactNo2()+"' WHERE id="+user.getId());
+				+ "full_name='"+user.getFullName()+"',"
+				+ "flat_no='"+user.getFlatNo()+"',"
+				+ "contact_no1='"+user.getContactNo1()+"',"
+				+ "contact_no2='"+user.getContactNo2()+"' WHERE id="+user.getId());
 		
 	}
 
 	public void updateRole(UserModel user) {
 		Map<String, Object> userDetails = getUserDetails(user.getUsername());
 		jdbcTemplate.execute("UPDATE role SET "
-				+ "roleName='"+user.getRoleName()+"' WHERE userId="+userDetails.get("id"));
+				+ "role_name='"+user.getRoleName()+"' WHERE user_id="+userDetails.get("id"));
 		
 	}
 

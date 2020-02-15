@@ -57,4 +57,15 @@ public class UserRepository {
 		return userDetails;
 	}
 
+	public void update(UserModel user) {
+		jdbcTemplate.execute("UPDATE user_details SET "
+				+ "username='"+user.getUsername()+"',"
+				+ "password='"+user.getPassword()+"',"
+				+ "full_name='"+user.getFullName()+"',"
+				+ "flat_no='"+user.getFlatNo()+"',"
+				+ "contact_no1='"+user.getContactNo1()+"',"
+				+ "contact_no2='"+user.getContactNo2()+"' WHERE id="+user.getId());
+		
+	}
+
 }

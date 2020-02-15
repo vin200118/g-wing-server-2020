@@ -23,4 +23,8 @@ public class UserService {
 		 return userRepository.getDetails(user);
 	}
 
+	public void update(UserModel user) {
+		userRepository.update(user);	
+	}
+
 }

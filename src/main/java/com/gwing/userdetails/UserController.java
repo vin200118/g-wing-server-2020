@@ -37,6 +37,12 @@ public class UserController {
 		return new ResponseEntity<String>("Username is already exists,try another username", HttpStatus.BAD_REQUEST);
 	}
 	
+	@RequestMapping(value = "user", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateUser(@RequestBody UserModel user) {
+		userService.update(user);
+		return new ResponseEntity<String>("User details updated Successfully", HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "user/{username}", method = RequestMethod.GET)
 	public ResponseEntity<?> saveUser(@PathVariable String username) {
 		try {

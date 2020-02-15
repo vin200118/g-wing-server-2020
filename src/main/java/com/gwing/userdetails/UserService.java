@@ -34,4 +34,8 @@ public class UserService {
 		userRepository.updateRole(user);
 	}
 
+	public Map<String, Object> getAllUser() {
+		return userRepository.getAllUser();
+	}
+
 }

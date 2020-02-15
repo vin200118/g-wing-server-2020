@@ -33,7 +33,7 @@ public class UserRepository {
 			if(map!= null){
 				jdbcTemplate.execute("INSERT INTO role "
 						+ "(user_id,role_name) "
-						+ "VALUES("+Integer.parseInt(""+map.get("id"))+",'user');");
+						+ "VALUES("+Integer.parseInt(""+map.get("role_id"))+",'user');");
 			}
 		}catch(EmptyResultDataAccessException e) {
 			logger.error(e.getMessage());
@@ -47,7 +47,7 @@ public class UserRepository {
 	} 
 	public Map<String, Object> getUserDetailsToCheckUpdate(UserModel user){
 		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and "
-				+ "id!="+user.getId());
+				+ "user_id!="+user.getId());
 	} 
 
 	public Map<String, Object> getDetails(String username) {
@@ -56,7 +56,7 @@ public class UserRepository {
 
 	public Map<String, Object> getDetails(UserModel user) {
 		Map<String, Object> userDetails = jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and password='"+user.getPassword()+"'");
-		Map<String, Object> userRole = jdbcTemplate.queryForMap("SELECT * FROM role WHERE user_id= '"+userDetails.get("id")+"'");
+		Map<String, Object> userRole = jdbcTemplate.queryForMap("SELECT * FROM role WHERE user_id= '"+userDetails.get("user_id")+"'");
 		userDetails.putAll(userRole);
 		return userDetails;
 	}
@@ -77,6 +77,10 @@ public class UserRepository {
 		jdbcTemplate.execute("UPDATE role SET "
 				+ "role_name='"+user.getRoleName()+"' WHERE user_id="+userDetails.get("id"));
 		
+	}
+
+	public Map<String, Object> getAllUser() {
+		return jdbcTemplate.queryForMap("SELECT * FROM user_details");
 	}
 
 }

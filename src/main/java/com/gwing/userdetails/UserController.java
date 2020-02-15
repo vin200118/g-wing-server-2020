@@ -76,6 +76,17 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(value = "user", method = RequestMethod.GET)
+	public ResponseEntity<?> allUser() {
+		try {
+			return new ResponseEntity<Map<String, Object>>(userService.getAllUser(), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"User details not found", 
+			          HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@RequestMapping(value = "user-login", method = RequestMethod.POST)
 	public ResponseEntity<?> userLogin(@RequestBody UserModel user) {
 		try {

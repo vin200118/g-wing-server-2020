@@ -8,12 +8,13 @@ public class UserModel {
 	private String flatNo;
 	private String contactNo1;
 	private String contactNo2;
+	private String roleName;
 	
 	public UserModel() {
 		
 	}
 	public UserModel(int id, String username, String password, 
-			String fullName, String flatNo, String contactNo1, String contactNo2) {
+			String fullName, String flatNo, String contactNo1, String contactNo2, String roleName) {
 		this.id=id;
 		this.username= username;
 		this.password=password;
@@ -21,6 +22,7 @@ public class UserModel {
 		this.flatNo=flatNo;
 		this.contactNo1=contactNo1;
 		this.contactNo2=contactNo2;
+		this.roleName= roleName;
 		
 	}
 	
@@ -66,8 +68,11 @@ public class UserModel {
 	public void setContactNo2(String contactNo2) {
 		this.contactNo2 = contactNo2;
 	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 	
-	
-	
-
 }

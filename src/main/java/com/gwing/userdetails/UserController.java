@@ -52,6 +52,19 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(value = "role", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateRole(@RequestBody UserModel user) {
+		
+		try {
+			userService.updateRole(user);
+			return new ResponseEntity<String>("User role updated Successfully", HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			
+			return new ResponseEntity<String>("User doesn't exists", HttpStatus.BAD_REQUEST);
+		}
+				
+	}
+	
 	@RequestMapping(value = "user/{username}", method = RequestMethod.GET)
 	public ResponseEntity<?> saveUser(@PathVariable String username) {
 		try {

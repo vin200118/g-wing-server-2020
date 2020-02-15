@@ -30,4 +30,8 @@ public class UserService {
 		userRepository.update(user);	
 	}
 
+	public void updateRole(UserModel user) {
+		userRepository.updateRole(user);
+	}
+
 }

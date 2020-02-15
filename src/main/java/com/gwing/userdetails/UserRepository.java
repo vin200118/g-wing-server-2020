@@ -34,7 +34,7 @@ public class UserRepository {
 			if(map!= null){
 				jdbcTemplate.execute("INSERT INTO role "
 						+ "(user_id,role_name) "
-						+ "VALUES("+Integer.parseInt(""+map.get("role_id"))+",'user');");
+						+ "VALUES("+Integer.parseInt(""+map.get("user_id"))+",'user');");
 			}
 		}catch(EmptyResultDataAccessException e) {
 			logger.error(e.getMessage());
@@ -69,14 +69,14 @@ public class UserRepository {
 				+ "full_name='"+user.getFullName()+"',"
 				+ "flat_no='"+user.getFlatNo()+"',"
 				+ "contact_no1='"+user.getContactNo1()+"',"
-				+ "contact_no2='"+user.getContactNo2()+"' WHERE id="+user.getId());
+				+ "contact_no2='"+user.getContactNo2()+"' WHERE user_id="+user.getId());
 		
 	}
 
 	public void updateRole(UserModel user) {
 		Map<String, Object> userDetails = getUserDetails(user.getUsername());
 		jdbcTemplate.execute("UPDATE role SET "
-				+ "role_name='"+user.getRoleName()+"' WHERE user_id="+userDetails.get("id"));
+				+ "role_name='"+user.getRoleName()+"' WHERE user_id="+userDetails.get("user_id"));
 		
 	}
 

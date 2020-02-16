@@ -30,13 +30,13 @@ public class UserController {
 	@RequestMapping(value = "user", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserModel user) {
 		try {
-			userService.getDetails(user.getUsername());
+			userService.getDetails(user.getFlatNo());
 		}catch(EmptyResultDataAccessException e) {
 			userService.save(user);
 			return new ResponseEntity<String>("User Registered Successfully", HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<String>("Username is already exists,try another username", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("Flat no is already exists,try another flatno", HttpStatus.BAD_REQUEST);
 	}
 	
 	@CrossOrigin
@@ -50,7 +50,7 @@ public class UserController {
 			return new ResponseEntity<String>("User details updated Successfully", HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<String>("Username is already exists,try another username", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("Flat no is already exists,check with admin", HttpStatus.BAD_REQUEST);
 		
 		
 	}
@@ -70,13 +70,13 @@ public class UserController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "user/{username}", method = RequestMethod.GET)
-	public ResponseEntity<?> saveUser(@PathVariable String username) {
+	@RequestMapping(value = "user/{flatNo}", method = RequestMethod.GET)
+	public ResponseEntity<?> saveUser(@PathVariable String flatNo) {
 		try {
-			return new ResponseEntity<Map<String, Object>>(userService.getDetails(username), HttpStatus.OK);
+			return new ResponseEntity<Map<String, Object>>(userService.getDetails(flatNo), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
 			return new ResponseEntity<String>(
-					"username does not exists", 
+					"flatno does not exists", 
 			          HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -100,7 +100,7 @@ public class UserController {
 			return new ResponseEntity<Map<String, Object>>(userService.isUserExists(user), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
 			return new ResponseEntity<>(
-					"Username and password are incorrect", 
+					"FlatNo and password are incorrect", 
 			          HttpStatus.UNAUTHORIZED);
 		}	
 		

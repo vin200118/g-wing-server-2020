@@ -16,8 +16,8 @@ public class UserService {
 		userRepository.save(user);		
 	}
 
-	public Map<String, Object> getDetails(String username) {
-		return userRepository.getDetails(username);
+	public Map<String, Object> getDetails(String flatNo) {
+		return userRepository.getDetails(flatNo);
 	}
 
 	public Map<String, Object> isUserExists(UserModel user) {

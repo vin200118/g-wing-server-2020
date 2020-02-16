@@ -19,17 +19,16 @@ public class UserRepository {
 
 	public void save(UserModel user) {
 		jdbcTemplate.execute("INSERT INTO user_details "
-				+ "(username,password,full_name,flat_no,contact_no1,contact_no2) "
-				+ "VALUES('"+user.getUsername()+"',"+
+				+ "(flat_no,password,full_name,contact_no1,contact_no2) "
+				+ "VALUES('"+user.getFlatNo()+"',"+
 				"'"+user.getPassword()+"',"+	
 				"'"+user.getFullName()+"',"+
-				"'"+user.getFlatNo()+"',"+
 				"'"+user.getContactNo1()+"',"+
 				"'"+user.getContactNo2()+"');");
 		
 		try {
 			
-			Map<String, Object> map = getUserDetails(user.getUsername());
+			Map<String, Object> map = getUserDetails(user.getFlatNo());
 			
 			if(map!= null){
 				jdbcTemplate.execute("INSERT INTO role "
@@ -43,20 +42,20 @@ public class UserRepository {
 		
 	}
 	
-	private Map<String, Object> getUserDetails(String username){
-		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+username+"'");
+	private Map<String, Object> getUserDetails(String flatNo){
+		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE flat_no= '"+flatNo+"'");
 	} 
 	public Map<String, Object> getUserDetailsToCheckUpdate(UserModel user){
-		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and "
+		return jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE flat_no= '"+user.getFlatNo()+"' and "
 				+ "user_id!="+user.getId());
 	} 
 
-	public Map<String, Object> getDetails(String username) {
-		return getUserDetails(username);
+	public Map<String, Object> getDetails(String flatNo) {
+		return getUserDetails(flatNo);
 	}
 
 	public Map<String, Object> getDetails(UserModel user) {
-		Map<String, Object> userDetails = jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE username= '"+user.getUsername()+"' and password='"+user.getPassword()+"'");
+		Map<String, Object> userDetails = jdbcTemplate.queryForMap("SELECT * FROM user_details WHERE flat_no= '"+user.getFlatNo()+"' and password='"+user.getPassword()+"'");
 		Map<String, Object> userRole = jdbcTemplate.queryForMap("SELECT * FROM role WHERE user_id= '"+userDetails.get("user_id")+"'");
 		userDetails.putAll(userRole);
 		return userDetails;
@@ -64,7 +63,6 @@ public class UserRepository {
 
 	public void update(UserModel user) {
 		jdbcTemplate.execute("UPDATE user_details SET "
-				+ "username='"+user.getUsername()+"',"
 				+ "password='"+user.getPassword()+"',"
 				+ "full_name='"+user.getFullName()+"',"
 				+ "flat_no='"+user.getFlatNo()+"',"
@@ -74,7 +72,7 @@ public class UserRepository {
 	}
 
 	public void updateRole(UserModel user) {
-		Map<String, Object> userDetails = getUserDetails(user.getUsername());
+		Map<String, Object> userDetails = getUserDetails(user.getFlatNo());
 		jdbcTemplate.execute("UPDATE role SET "
 				+ "role_name='"+user.getRoleName()+"' WHERE user_id="+userDetails.get("user_id"));
 		

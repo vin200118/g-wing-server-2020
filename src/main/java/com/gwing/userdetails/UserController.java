@@ -40,7 +40,7 @@ public class UserController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "user", method = RequestMethod.PUT)
+	@RequestMapping(value = "user/update", method = RequestMethod.POST)
 	public ResponseEntity<?> updateUser(@RequestBody UserModel user) {
 		
 		try {
@@ -100,7 +100,7 @@ public class UserController {
 			return new ResponseEntity<Map<String, Object>>(userService.isUserExists(user), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
 			return new ResponseEntity<>(
-					"FlatNo and password are incorrect", 
+					"Please enter correct Flat No and password", 
 			          HttpStatus.UNAUTHORIZED);
 		}	
 		

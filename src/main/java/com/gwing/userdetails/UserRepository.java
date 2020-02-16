@@ -79,7 +79,7 @@ public class UserRepository {
 	}
 
 	public List<Map<String, Object>> getAllUser() {
-		return jdbcTemplate.queryForList("SELECT * FROM user_details");
+		return jdbcTemplate.queryForList("SELECT * FROM user_details order by flat_no asc");
 	}
 
 }

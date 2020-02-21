@@ -71,7 +71,7 @@ public class UserController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "user/{flatNo}", method = RequestMethod.GET)
-	public ResponseEntity<?> saveUser(@PathVariable String flatNo) {
+	public ResponseEntity<?> getUserDetails(@PathVariable String flatNo) {
 		try {
 			return new ResponseEntity<Map<String, Object>>(userService.getDetails(flatNo), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {

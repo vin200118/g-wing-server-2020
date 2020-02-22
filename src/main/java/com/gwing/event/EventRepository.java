@@ -49,7 +49,7 @@ public class EventRepository {
 	}
 
 	public List<Map<String, Object>> getAllEvents() {
-		return jdbcTemplate.queryForList("SELECT eventId, eventName, eventCost, eventStatus FROM event order by eventName asc");
+		return jdbcTemplate.queryForList("SELECT 'eventId', 'eventName', 'eventCost', 'eventStatus' FROM event order by 'eventName' asc");
 	}
 
 	public void deleteEvent(int eventId) {

@@ -53,7 +53,9 @@ public class EventContributionService {
 			 //remove existing flat number is not in requested list 
 			 for(Map<String, Object> eventContriDetails : listEventContri) {
 				 if(!flatNos.contains(eventContriDetails.get("flatNo"))) {
-					 if(StringUtils.isEmpty(eventContriDetails.get("eventContriPaidAmount"))){
+					 if(null == eventContriDetails.get("eventContriPaidAmount") || 
+							 "".equals(""+eventContriDetails.get("eventContriPaidAmount")) ||
+							 "null".equals(""+eventContriDetails.get("eventContriPaidAmount")) ){
 						 repository.deleteEventContriDetail(eventContrib.getEventId(), ""+eventContriDetails.get("flatNo"));
 					 }
 				 }

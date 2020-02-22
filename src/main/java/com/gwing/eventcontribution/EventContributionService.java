@@ -101,7 +101,7 @@ public class EventContributionService {
 		return repository.getAllFlatContriDetailsByEventId(eventId);
 	}
 
-	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, int flatNo) {
+	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, String flatNo) {
 		return repository.getFlatContriDetailsByFlatAndEventId(eventId, flatNo);
 	}
 

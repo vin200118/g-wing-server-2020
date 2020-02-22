@@ -37,7 +37,7 @@ public class EventContributionService {
 			 //if existing flat number is not present in requested list and user given amount as well then dont allow him to remove him.
 			 for(Map<String, Object> eventContriDetails : listEventContri) {
 				 if(!flatNos.contains(""+eventContriDetails.get("flatNo"))) {
-					 if(!StringUtils.isEmpty(""+eventContriDetails.get("eventContriPaidAmount"))){
+					 if(!StringUtils.isEmpty(eventContriDetails.get("eventContriPaidAmount"))){
 						 throw new IllegalArgumentException("This"+eventContriDetails.get("flatNo")+" is already paid contirbution for this event,"
 						 		+ " you first informed to respective flat number and mark empty in contri receive page");
 					 }
@@ -46,8 +46,8 @@ public class EventContributionService {
 			 
 			 //remove existing flat number is not in requested list 
 			 for(Map<String, Object> eventContriDetails : listEventContri) {
-				 if(!flatNos.contains(""+eventContriDetails.get("flatNo"))) {
-					 if(StringUtils.isEmpty(""+eventContriDetails.get("eventContriPaidAmount"))){
+				 if(!flatNos.contains(eventContriDetails.get("flatNo"))) {
+					 if(StringUtils.isEmpty(eventContriDetails.get("eventContriPaidAmount"))){
 						 repository.deleteEventContriDetail(eventContrib.getEventId(), ""+eventContriDetails.get("flatNo"));
 					 }
 				 }

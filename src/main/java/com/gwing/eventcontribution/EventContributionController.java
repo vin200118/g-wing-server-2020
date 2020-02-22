@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,16 +43,27 @@ public class EventContributionController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "eventcontribution/{eventId}", method = RequestMethod.GET)
-	public ResponseEntity<List<Map<String, Object>>> getAllFlatsContributionDetails(@PathVariable int eventId) {
+	public ResponseEntity<?> getAllFlatsContributionDetails(@PathVariable int eventId) {
+		try {
 			return new ResponseEntity<List<Map<String, Object>>>(eventContributionService.getAllFlatContributionDetails(eventId), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+				return new ResponseEntity<String>(
+						"No data found", 
+				          HttpStatus.BAD_REQUEST);
+			}
 			
 	}
 	
 	@CrossOrigin
 	@RequestMapping(value = "eventcontribution/{eventId}/{flatNo}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllFlatsContributionDetails(@PathVariable int eventId,@PathVariable int flatNo) {
+	public ResponseEntity<?> getAllFlatsContributionDetails(@PathVariable int eventId,@PathVariable int flatNo) {
+		try {	
 			return new ResponseEntity<Map<String, Object>>(eventContributionService.getFlatContriDetailsByFlatAndEventId(eventId, flatNo), HttpStatus.OK);
-			
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"No data found", 
+			          HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }

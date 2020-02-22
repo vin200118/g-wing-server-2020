@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -13,7 +15,7 @@ import com.gwing.event.EventRepository;
 
 @Service
 public class EventContributionService {
-	
+	public static final Logger logger = LoggerFactory.getLogger(EventContributionService.class);
 	private EventContributionRepository repository;
 	private EventRepository eventRepository;
 	
@@ -36,7 +38,9 @@ public class EventContributionService {
 		 if(!listEventContri.isEmpty()) {
 			 //if existing flat number is not present in requested list and user given amount as well then dont allow him to remove him.
 			 for(Map<String, Object> eventContriDetails : listEventContri) {
+				 logger.info("db flatno : "+eventContriDetails.get("flatNo"));
 				 if(!flatNos.contains(""+eventContriDetails.get("flatNo"))) {
+					 logger.info("eventContriPaidAmount : "+eventContriDetails.get("eventContriPaidAmount"));
 					 if(!StringUtils.isEmpty(eventContriDetails.get("eventContriPaidAmount"))){
 						 throw new IllegalArgumentException("This"+eventContriDetails.get("flatNo")+" is already paid contirbution for this event,"
 						 		+ " you first informed to respective flat number and mark empty in contri receive page");

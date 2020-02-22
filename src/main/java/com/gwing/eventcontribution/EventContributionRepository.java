@@ -22,17 +22,17 @@ public class EventContributionRepository {
 	public void save(int eventId, String flatNo, String eventContriAmt) {
 		
 		jdbcTemplate.execute("INSERT INTO event_contribution "
-				+ "(flat_no,event_id,event_cont_amt) "
+				+ "(flatNo,eventId,eventContriAmount) "
 				+ "VALUES('"+flatNo+"',"+
 				""+eventId+",'"+eventContriAmt+"');");
 	}
 	
 	public List<Map<String, Object>> getAllFlatContriDetailsByEventId(int eventId) {
 		try {
-			return jdbcTemplate.queryForList("SELECT event_cont_id AS 'eventContriId',flat_no AS 'flatNo', "
-										+ "event_id AS 'eventId', event_cont_amt AS 'eventContriAmount', "
-										+ "event_cont_paid_amt AS 'eventContriPaidAmount', event_cont_date AS 'eventContriDate',"
-										+ "paid_to AS 'paidToFlatNo' FROM event_contribution WHERE event_id="+eventId+";");		
+			return jdbcTemplate.queryForList("SELECT eventContriId,flatNo, "
+										+ "eventId, eventContriAmount, "
+										+ "eventContriPaidAmount, eventContriDate,"
+										+ "paidToFlatNo FROM event_contribution WHERE eventId="+eventId+";");		
 		}catch(EmptyResultDataAccessException e) {
 			return new ArrayList<>();
 		}
@@ -40,12 +40,12 @@ public class EventContributionRepository {
 	}
 	
 	public void deleteEventContriDetail(int eventId, String flatNo) {
-		jdbcTemplate.execute("DELETE FROM event_contribution WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'"); 
+		jdbcTemplate.execute("DELETE FROM event_contribution WHERE eventId="+eventId+" AND flatNo='"+flatNo+"'"); 
 	}
 	
 	public void update(int eventId, String flatNo, String contriAmount) {
 		jdbcTemplate.execute("UPDATE event_contribution SET "
-				+ "event_cont_amt='"+contriAmount+"' WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'");
+				+ "eventContriAmount='"+contriAmount+"' WHERE eventId="+eventId+" AND flatNo='"+flatNo+"'");
 		
 	}
 
@@ -54,16 +54,16 @@ public class EventContributionRepository {
 			String paidToFlatNo, String eventContriDate) {
 		
 		jdbcTemplate.execute("UPDATE event_contribution SET "+
-				" event_cont_paid_amt='"+eventContriPaidAmount+"', event_cont_date='"+eventContriDate+"', "
-						+ "paid_to='"+paidToFlatNo+"' WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'");
+				" eventContriPaidAmount='"+eventContriPaidAmount+"', eventContriDate='"+eventContriDate+"', "
+						+ "paidToFlatNo='"+paidToFlatNo+"' WHERE eventId="+eventId+" AND flatNo='"+flatNo+"'");
 	}
 
 
 	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, String flatNo) {
-		return jdbcTemplate.queryForMap("SELECT event_cont_id AS 'eventContriId',flat_no AS 'flatNo', "
-				+ "event_id AS 'eventId', event_cont_amt AS 'eventContriAmount', "
-				+ "event_cont_paid_amt AS 'eventContriPaidAmount', event_cont_date AS 'eventContriDate',"
-				+ "paid_to AS 'paidToFlatNo' FROM event_contribution where event_id="+eventId+" AND flat_no='"+flatNo+"';");
+		return jdbcTemplate.queryForMap("SELECT eventContriId,flatNo, "
+				+ "eventId, eventContriAmount, "
+				+ "eventContriPaidAmount, eventContriDate,"
+				+ "paidToFlatNo FROM event_contribution where eventId="+eventId+" AND flatNo='"+flatNo+"';");
 	}
 
 

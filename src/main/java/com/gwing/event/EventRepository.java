@@ -19,35 +19,37 @@ public class EventRepository {
 
 	public void save(Event event) {
 		jdbcTemplate.execute("INSERT INTO event "
-				+ "(event_name,cost) "
+				+ "(event_name,cost,status) "
 				+ "VALUES('"+event.getEventName()+"',"+
-				"'"+event.getEventCost()+"');");
+				"'"+event.getEventCost()+"',"+
+				"'"+event.getStatus()+"');");
 	}
 
 	public Map<String, Object> getDetails(String eventName) {
-		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost FROM event WHERE event_name= '"+eventName+"'");
+		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event WHERE event_name= '"+eventName+"'");
 		
 	}
 	
 	public Map<String, Object> getDetailsByEventId(int eventId) {
-		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost FROM event WHERE event_id= '"+eventId+"'");
+		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event WHERE event_id= '"+eventId+"'");
 		
 	}
 
 	public Map<String, Object> getEventDetailsToCheckUpdate(Event event) {
-		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost FROM event WHERE event_name= '"+event.getEventName()+"' and "
+		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event WHERE event_name= '"+event.getEventName()+"' and "
 				+ "event_id!="+event.getEventId());
 	}
 
 	public void update(Event event) {
 		jdbcTemplate.execute("UPDATE event SET "
 				+ "event_name='"+event.getEventName()+"',"
+						+ "status='"+event.getStatus()+"',"
 				+ "cost='"+event.getEventCost()+"' WHERE event_id="+event.getEventId());
 		
 	}
 
 	public List<Map<String, Object>> getAllEvents() {
-		return jdbcTemplate.queryForList("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost FROM event order by event_name asc");
+		return jdbcTemplate.queryForList("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event order by event_name asc");
 	}
 
 	public void deleteEvent(int eventId) {

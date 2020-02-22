@@ -26,17 +26,17 @@ public class EventRepository {
 	}
 
 	public Map<String, Object> getDetails(String eventName) {
-		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event WHERE event_name= '"+eventName+"'");
+		return jdbcTemplate.queryForMap("SELECT event_id AS 'eventId', event_name AS 'eventName', cost AS 'eventCost', status FROM event WHERE event_name= '"+eventName+"'");
 		
 	}
 	
 	public Map<String, Object> getDetailsByEventId(int eventId) {
-		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event WHERE event_id= '"+eventId+"'");
+		return jdbcTemplate.queryForMap("SELECT event_id AS 'eventId', event_name AS 'eventName', cost AS 'eventCost', status FROM event WHERE event_id= '"+eventId+"'");
 		
 	}
 
 	public Map<String, Object> getEventDetailsToCheckUpdate(Event event) {
-		return jdbcTemplate.queryForMap("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event WHERE event_name= '"+event.getEventName()+"' and "
+		return jdbcTemplate.queryForMap("SELECT event_id AS 'eventId', event_name AS 'eventName', cost AS 'eventCost', status FROM event WHERE event_name= '"+event.getEventName()+"' and "
 				+ "event_id!="+event.getEventId());
 	}
 
@@ -49,7 +49,7 @@ public class EventRepository {
 	}
 
 	public List<Map<String, Object>> getAllEvents() {
-		return jdbcTemplate.queryForList("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event order by event_name asc");
+		return jdbcTemplate.queryForList("SELECT event_id AS 'eventId', event_name AS 'eventName', cost AS 'eventCost', status FROM event order by event_name asc");
 	}
 
 	public void deleteEvent(int eventId) {

@@ -29,10 +29,10 @@ public class EventContributionRepository {
 	
 	public List<Map<String, Object>> getAllFlatContriDetailsByEventId(int eventId) {
 		try {
-			return jdbcTemplate.queryForList("SELECT event_cont_id AS eventContriId,flat_no AS flatNo, "
-										+ "event_id AS eventId, event_cont_amt AS eventContriAmount, "
-										+ "event_cont_paid_amt AS eventContriPaidAmount, event_cont_date AS eventContriDate,"
-										+ "paid_to AS paidToFlatNo FROM event_contribution WHERE event_id="+eventId+";");		
+			return jdbcTemplate.queryForList("SELECT event_cont_id AS 'eventContriId',flat_no AS 'flatNo', "
+										+ "event_id AS 'eventId', event_cont_amt AS 'eventContriAmount', "
+										+ "event_cont_paid_amt AS 'eventContriPaidAmount', event_cont_date AS 'eventContriDate',"
+										+ "paid_to AS 'paidToFlatNo' FROM event_contribution WHERE event_id="+eventId+";");		
 		}catch(EmptyResultDataAccessException e) {
 			return new ArrayList<>();
 		}
@@ -60,10 +60,10 @@ public class EventContributionRepository {
 
 
 	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, String flatNo) {
-		return jdbcTemplate.queryForMap("SELECT event_cont_id AS eventContriId,flat_no AS flatNo, "
-				+ "event_id AS eventId, event_cont_amt AS eventContriAmount, "
-				+ "event_cont_paid_amt AS eventContriPaidAmount, event_cont_date AS eventContriDate,"
-				+ "paid_to AS paidToFlatNo FROM event_contribution where event_id="+eventId+" AND flat_no='"+flatNo+"';");
+		return jdbcTemplate.queryForMap("SELECT event_cont_id AS 'eventContriId',flat_no AS 'flatNo', "
+				+ "event_id AS 'eventId', event_cont_amt AS 'eventContriAmount', "
+				+ "event_cont_paid_amt AS 'eventContriPaidAmount', event_cont_date AS 'eventContriDate',"
+				+ "paid_to AS 'paidToFlatNo' FROM event_contribution where event_id="+eventId+" AND flat_no='"+flatNo+"';");
 	}
 
 

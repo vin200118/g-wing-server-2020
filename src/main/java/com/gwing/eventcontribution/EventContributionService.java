@@ -27,7 +27,7 @@ public class EventContributionService {
 	public void save(EventContributionModel eventContrib) {
 		
 		Map<String, Object> eventMap = eventRepository.getDetailsByEventId(eventContrib.getEventId());
-		if(!StringUtils.isEmpty(""+eventMap.get("eventStatus")) && Event.COMPLETED.equals(""+eventMap.get("eventStatus"))) {
+		if(!StringUtils.isEmpty(""+eventMap.get("status")) && Event.COMPLETED.equals(""+eventMap.get("status"))) {
 			throw new IllegalArgumentException("This "+eventMap.get("eventName")+" is already completed, you can't modified it.");
 		}
 		
@@ -87,7 +87,7 @@ public class EventContributionService {
 	public void receivedContribution(EventContributionModel eventContrib) {
 		
 		Map<String, Object> eventMap = eventRepository.getDetailsByEventId(eventContrib.getEventId());
-		if(!StringUtils.isEmpty(""+eventMap.get("eventStatus")) && Event.COMPLETED.equals(""+eventMap.get("eventStatus"))) {
+		if(!StringUtils.isEmpty(""+eventMap.get("status")) && Event.COMPLETED.equals(""+eventMap.get("status"))) {
 			throw new IllegalArgumentException("This "+eventMap.get("eventName")+" is already completed, you can't modified it.");
 		}
 		for(String flatNo:eventContrib.getFlatNo()) {

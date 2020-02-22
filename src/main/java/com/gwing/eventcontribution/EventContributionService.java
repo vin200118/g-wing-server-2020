@@ -41,7 +41,9 @@ public class EventContributionService {
 				 logger.info("db flatno : "+eventContriDetails.get("flatNo"));
 				 if(!flatNos.contains(""+eventContriDetails.get("flatNo"))) {
 					 logger.info("eventContriPaidAmount : "+eventContriDetails.get("eventContriPaidAmount"));
-					 if(!StringUtils.isEmpty(eventContriDetails.get("eventContriPaidAmount"))){
+					 if(eventContriDetails.get("eventContriPaidAmount") != null && 
+							 eventContriDetails.get("eventContriPaidAmount") != "" &&
+							 	eventContriDetails.get("eventContriPaidAmount") != "null"){
 						 throw new IllegalArgumentException("This"+eventContriDetails.get("flatNo")+" is already paid contirbution for this event,"
 						 		+ " you first informed to respective flat number and mark empty in contri receive page");
 					 }

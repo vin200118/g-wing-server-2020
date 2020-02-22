@@ -59,7 +59,7 @@ public class EventContributionRepository {
 	}
 
 
-	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, int flatNo) {
+	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, String flatNo) {
 		return jdbcTemplate.queryForMap("SELECT event_cont_id AS eventContriId,flat_no AS flatNo, "
 				+ "event_id AS eventId, event_cont_amt AS eventContriAmount, "
 				+ "event_cont_paid_amt AS eventContriPaidAmount, event_cont_date AS eventContriDate,"

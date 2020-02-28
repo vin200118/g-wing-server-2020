@@ -85,7 +85,7 @@ public class EventController {
 		}
 		return new ResponseEntity<String>(
 				"You can't delete this Event, Contribution already paid by flat owners.", 
-		          HttpStatus.OK);
+		          HttpStatus.BAD_REQUEST);
 		
 	}
 

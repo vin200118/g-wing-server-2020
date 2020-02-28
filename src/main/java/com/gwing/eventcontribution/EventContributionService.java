@@ -100,6 +100,14 @@ public class EventContributionService {
 	public List<Map<String, Object>> getAllFlatContributionDetails(int eventId) {
 		return repository.getAllFlatContriDetailsByEventId(eventId);
 	}
+	
+	public List<Map<String, Object>> isAnyFlatOwnerPaidContriForEvent(int eventId){
+		return repository.isAnyFlatOwnerPaidContriForEvent(eventId);
+	}
+	
+	public void deleteFlatContributionIfNoOnPaidAnyContriForEvent(int eventId){
+		 repository.deleteFlatContributionIfNoOnPaidAnyContriForEvent(eventId);
+	}
 
 	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, String flatNo) {
 		return repository.getFlatContriDetailsByFlatAndEventId(eventId, flatNo);

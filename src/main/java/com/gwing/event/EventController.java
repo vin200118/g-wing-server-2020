@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gwing.eventcontribution.EventContributionService;
+
 
 @CrossOrigin
 @RestController
@@ -25,6 +27,8 @@ public class EventController {
 	public static final Logger logger = LoggerFactory.getLogger(EventController.class);
 	@Autowired
 	EventService eventService;
+	@Autowired
+	EventContributionService eventContributionService;
 	
 	@CrossOrigin
 	@RequestMapping(value = "event", method = RequestMethod.POST)
@@ -69,10 +73,20 @@ public class EventController {
 	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteEvent(@PathVariable int eventId) {
-		eventService.deleteEvent(eventId);
+		
+		try {
+			eventContributionService.isAnyFlatOwnerPaidContriForEvent(eventId);
+		}catch(EmptyResultDataAccessException e) {
+			eventContributionService.deleteFlatContributionIfNoOnPaidAnyContriForEvent(eventId);
+			eventService.deleteEvent(eventId);
+			return new ResponseEntity<String>(
+					"Event deleted successfully.", 
+			          HttpStatus.OK);
+		}
 		return new ResponseEntity<String>(
-				"Event deleted successfully.", 
+				"You can't delete this Event, Contribution already paid by flat owners.", 
 		          HttpStatus.OK);
+		
 	}
 
 }

@@ -39,6 +39,17 @@ public class EventContributionRepository {
 		
 	}
 	
+	public List<Map<String, Object>> isAnyFlatOwnerPaidContriForEvent(int eventId){
+		return jdbcTemplate.queryForList("SELECT event_cont_id AS eventContriId,flat_no AS flatNo, "
+				+ "event_id AS eventId, event_cont_amt AS eventContriAmount, "
+				+ "event_cont_paid_amt AS eventContriPaidAmount, event_cont_date AS eventContriDate,"
+				+ "paid_to AS paidToFlatNo FROM event_contribution WHERE event_id="+eventId+" and event_cont_paid_amt is not null and event_cont_paid_amt !='';");	
+	}
+	
+	public void deleteFlatContributionIfNoOnPaidAnyContriForEvent(int eventId) {
+		jdbcTemplate.execute("DELETE FROM event_contribution WHERE event_id="+eventId+" and event_cont_paid_amt is null or event_cont_paid_amt =='';"); 
+	}
+	
 	public void deleteEventContriDetail(int eventId, String flatNo) {
 		jdbcTemplate.execute("DELETE FROM event_contribution WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'"); 
 	}

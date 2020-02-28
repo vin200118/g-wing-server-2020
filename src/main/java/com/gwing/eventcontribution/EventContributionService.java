@@ -38,9 +38,9 @@ public class EventContributionService {
 		 if(!listEventContri.isEmpty()) {
 			 //if existing flat number is not present in requested list and user given amount as well then dont allow him to remove him.
 			 for(Map<String, Object> eventContriDetails : listEventContri) {
-				 logger.info("db flatno : "+eventContriDetails.get("flatNo"));
+				// logger.info("db flatno : "+eventContriDetails.get("flatNo"));
 				 if(!flatNos.contains(""+eventContriDetails.get("flatNo"))) {
-					 logger.info("eventContriPaidAmount : "+eventContriDetails.get("eventContriPaidAmount"));
+				//	 logger.info("eventContriPaidAmount : "+eventContriDetails.get("eventContriPaidAmount"));
 					 if(null != eventContriDetails.get("eventContriPaidAmount") && 
 							 !"".equals(""+eventContriDetails.get("eventContriPaidAmount")) &&
 							 !"null".equals(""+eventContriDetails.get("eventContriPaidAmount")) ){

@@ -1,5 +1,6 @@
 package com.gwing.eventcontribution;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class EventContributionController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "eventcontribution/received", method = RequestMethod.POST)
-	public ResponseEntity<?> recevicedContribution(@RequestBody EventContributionModel eventContrib) {
+	public ResponseEntity<?> recevicedContribution(@RequestBody EventContributionModel eventContrib) throws SQLException {
 			eventContributionService.receivedContribution(eventContrib);
 			return new ResponseEntity<String>("Event Contribution received Successfully", HttpStatus.OK);
 			

@@ -1,5 +1,8 @@
 package com.gwing.eventcontribution;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,11 +67,19 @@ public class EventContributionRepository {
 
 
 	public void saveReceivedContribution(int eventId, String flatNo, String eventContriPaidAmount,
-			String paidToFlatNo, Date eventContriDate) {
+			String paidToFlatNo, Date eventContriDate) throws SQLException {
 		
-		jdbcTemplate.execute("UPDATE event_contribution SET "+
-				" event_cont_paid_amt='"+eventContriPaidAmount+"', event_cont_date="+eventContriDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()+", "
-						+ "paid_to='"+paidToFlatNo+"' WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'");
+		try( Connection con = jdbcTemplate.getDataSource().getConnection()){
+			PreparedStatement st = con.prepareStatement(
+					"UPDATE event_contribution SET event_cont_paid_amt=?, event_cont_date=?,paid_to=? WHERE event_id=? AND flat_no=?");
+			st.setString(1, eventContriPaidAmount);
+			st.setObject(2, eventContriDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+			st.setString(3, paidToFlatNo);
+			st.setInt(4, eventId);
+			st.setString(5, flatNo);
+			st.executeUpdate();
+			st.close();
+		}
 	}
 
 

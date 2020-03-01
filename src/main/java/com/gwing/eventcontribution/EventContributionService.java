@@ -1,5 +1,6 @@
 package com.gwing.eventcontribution;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +85,7 @@ public class EventContributionService {
 		 }
 	}
 
-	public void receivedContribution(EventContributionModel eventContrib) {
+	public void receivedContribution(EventContributionModel eventContrib) throws SQLException {
 		
 		Map<String, Object> eventMap = eventRepository.getDetailsByEventId(eventContrib.getEventId());
 		if(!StringUtils.isEmpty(""+eventMap.get("status")) && Event.COMPLETED.equals(""+eventMap.get("status"))) {

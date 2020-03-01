@@ -1,5 +1,6 @@
 package com.gwing.eventcontribution;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ public class EventContributionRepository {
 			String paidToFlatNo, Date eventContriDate) {
 		
 		jdbcTemplate.execute("UPDATE event_contribution SET "+
-				" event_cont_paid_amt='"+eventContriPaidAmount+"', event_cont_date="+eventContriDate+", "
+				" event_cont_paid_amt='"+eventContriPaidAmount+"', event_cont_date="+eventContriDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()+", "
 						+ "paid_to='"+paidToFlatNo+"' WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'");
 	}
 

@@ -1,18 +1,20 @@
 package com.gwing.eventcontribution;
 
+import java.util.Date;
+
 public class EventContributionModel {
 	private int eventContriId;
 	private int eventId;
 	private String[] flatNo;
 	private String eventContriAmount;
 	private String eventContriPaidAmount;
-	private String eventContriDate;
+	private Date eventContriDate;
 	private String paidToFlatNo;
 	
 	public EventContributionModel() {}
 	
 	public EventContributionModel(int eventContriId, int eventId, String[] flatNo, String eventContriAmount,
-			String eventContriPaidAmount, String eventContriDate, String paidToFlatNo) {
+			String eventContriPaidAmount, Date eventContriDate, String paidToFlatNo) {
 		this.eventContriId = eventContriId;
 		this.eventId = eventId;
 		this.flatNo = flatNo;
@@ -62,11 +64,11 @@ public class EventContributionModel {
 		this.eventContriPaidAmount = eventContriPaidAmount;
 	}
 
-	public String getEventContriDate() {
+	public Date getEventContriDate() {
 		return eventContriDate;
 	}
 
-	public void setEventContriDate(String eventContriDate) {
+	public void setEventContriDate(Date eventContriDate) {
 		this.eventContriDate = eventContriDate;
 	}
 

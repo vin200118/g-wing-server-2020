@@ -1,6 +1,7 @@
 package com.gwing.eventcontribution;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,10 +63,10 @@ public class EventContributionRepository {
 
 
 	public void saveReceivedContribution(int eventId, String flatNo, String eventContriPaidAmount,
-			String paidToFlatNo, String eventContriDate) {
+			String paidToFlatNo, Date eventContriDate) {
 		
 		jdbcTemplate.execute("UPDATE event_contribution SET "+
-				" event_cont_paid_amt='"+eventContriPaidAmount+"', event_cont_date='"+eventContriDate+"', "
+				" event_cont_paid_amt='"+eventContriPaidAmount+"', event_cont_date="+eventContriDate+", "
 						+ "paid_to='"+paidToFlatNo+"' WHERE event_id="+eventId+" AND flat_no='"+flatNo+"'");
 	}
 

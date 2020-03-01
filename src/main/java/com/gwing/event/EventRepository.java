@@ -51,6 +51,10 @@ public class EventRepository {
 	public List<Map<String, Object>> getAllEvents() {
 		return jdbcTemplate.queryForList("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event order by event_name asc");
 	}
+	
+	public List<Map<String, Object>> getAllEvents(String status) {
+		return jdbcTemplate.queryForList("SELECT event_id AS eventId, event_name AS eventName, cost AS eventCost, status FROM event where status="+status+" order by event_name asc");
+	}
 
 	public void deleteEvent(int eventId) {
 		jdbcTemplate.execute("DELETE FROM event WHERE event_id="+eventId); 

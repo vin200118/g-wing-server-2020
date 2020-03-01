@@ -71,6 +71,18 @@ public class EventController {
 	}
 	
 	@CrossOrigin
+	@RequestMapping(value = "event/{status}", method = RequestMethod.GET)
+	public ResponseEntity<?> allEventsByStatus(@PathVariable String status) {
+		try {
+			return new ResponseEntity<List<Map<String, Object>>>(eventService.getAllEvents(status), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"event list is empty", 
+			          HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@CrossOrigin
 	@RequestMapping(value = "event/{eventId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteEvent(@PathVariable int eventId) {
 		

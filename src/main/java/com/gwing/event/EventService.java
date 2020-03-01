@@ -50,6 +50,10 @@ public class EventService {
 	public List<Map<String, Object>> getAllEvents() {
 		return repository.getAllEvents();
 	}
+	
+	public List<Map<String, Object>> getAllEvents(String status) {
+		return repository.getAllEvents(status);
+	}
 
 	public void deleteEvent(int eventId) {
 		repository.deleteEvent(eventId);

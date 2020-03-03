@@ -19,12 +19,15 @@ public class UserRepository {
 
 	public void save(UserModel user) {
 		jdbcTemplate.execute("INSERT INTO user_details "
-				+ "(flat_no,password,full_name,contact_no1,contact_no2) "
+				+ "(flat_no,password,full_name,contact_no1,contact_no2, vehicle_no1, vehicle_no2, vehicle_no3) "
 				+ "VALUES('"+user.getFlatNo()+"',"+
 				"'"+user.getPassword()+"',"+	
 				"'"+user.getFullName()+"',"+
 				"'"+user.getContactNo1()+"',"+
-				"'"+user.getContactNo2()+"');");
+				"'"+user.getContactNo2()+"',"+
+				"'"+user.getVehicleNo1()+"',"+
+				"'"+user.getVehicleNo2()+"',"+
+				"'"+user.getVehicleNo3()+"');");
 		
 		try {
 			
@@ -67,7 +70,10 @@ public class UserRepository {
 				+ "full_name='"+user.getFullName()+"',"
 				+ "flat_no='"+user.getFlatNo()+"',"
 				+ "contact_no1='"+user.getContactNo1()+"',"
-				+ "contact_no2='"+user.getContactNo2()+"' WHERE user_id="+user.getId());
+				+ "contact_no2='"+user.getContactNo2()+"',"
+				+ "vehicle_no1='"+user.getVehicleNo1()+"',"
+				+ "vehicle_no2='"+user.getVehicleNo2()+"',"
+				+ "vehicle_no3='"+user.getVehicleNo3()+"' WHERE user_id="+user.getId());
 		
 	}
 

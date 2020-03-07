@@ -36,7 +36,7 @@ public class ExpensesRepository {
 	public List<Map<String, Object>> getAllExpense() {
 		try {
 			return jdbcTemplate.queryForList("SELECT exp_id AS expId,expenses_name AS expensesName, "
-										+ "expenses_amount AS expensesAmount, paid_to AS paidTo, "
+										+ "expenses_amount AS expensesAmt, paid_to AS paidTo, "
 										+ "paid_by AS paidBy, date AS date from expenses where expenses_amount is not null and expenses_amount !='' and expenses_amount !='0' order by date desc;");		
 		}catch(EmptyResultDataAccessException e) {
 			return new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.gwing.expenses;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class ExpensesService {
 	@Autowired
 	ExpensesRepository expensesRepository;
 	
-	public void addExpense(ExpensesModel expensesModel) {
+	public void addExpense(ExpensesModel expensesModel) throws SQLException {
 		expensesRepository.addExpense(expensesModel);
 	}
 	

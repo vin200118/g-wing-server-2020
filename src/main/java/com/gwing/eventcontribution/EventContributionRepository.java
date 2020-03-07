@@ -78,7 +78,6 @@ public class EventContributionRepository {
 			st.setInt(4, eventId);
 			st.setString(5, flatNo);
 			st.executeUpdate();
-			st.close();
 		}
 	}
 

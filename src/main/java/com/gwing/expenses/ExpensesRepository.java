@@ -2,6 +2,7 @@ package com.gwing.expenses;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,26 @@ public class ExpensesRepository {
 	JdbcTemplate jdbcTemplate;
 
 	public void addExpense(ExpensesModel expensesModel) {
-		jdbcTemplate.execute("INSERT INTO expenses "
-				+ "(expenses_name,expenses_amount,paid_to,paid_by,date) "
-				+ "VALUES('"+expensesModel.getExpensesName()+"',"+
-				"'"+expensesModel.getExpensesAmt()+"',"+
-				"'"+expensesModel.getPaidTo()+"',"+
-				"'"+expensesModel.getPaidBy()+"',"+
-				""+expensesModel.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()+");");
+		/*
+		 * jdbcTemplate.execute("INSERT INTO expenses " +
+		 * "(expenses_name,expenses_amount,paid_to,paid_by,date) " +
+		 * "VALUES('"+expensesModel.getExpensesName()+"',"+
+		 * "'"+expensesModel.getExpensesAmt()+"',"+ "'"+expensesModel.getPaidTo()+"',"+
+		 * "'"+expensesModel.getPaidBy()+"',"+
+		 * ""+expensesModel.getDate().toInstant().atZone(ZoneId.systemDefault()).
+		 * toLocalDate()+");");
+		 */
+		String sql = "INSERT INTO expenses " +
+				"(expenses_name,expenses_amount,paid_to,paid_by,date) VALUES (:expensesName, :expensesAmount, :paidTo, :paidBy, :date)";
+				
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("expensesName", expensesModel.getExpensesName());
+			parameters.put("expensesAmount", expensesModel.getExpensesAmt());
+			parameters.put("paidTo", expensesModel.getPaidTo());
+			parameters.put("paidBy", expensesModel.getPaidBy());
+			parameters.put("date", expensesModel.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+				
+			jdbcTemplate.update(sql, parameters);
 	}
 	
 	public List<Map<String, Object>> getAllExpense() {

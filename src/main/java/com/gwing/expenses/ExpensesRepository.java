@@ -37,7 +37,7 @@ public class ExpensesRepository {
 		try {
 			return jdbcTemplate.queryForList("SELECT exp_id AS expId,expenses_name AS expensesName, "
 										+ "expenses_amount AS expensesAmount, paid_to AS paidTo, "
-										+ "paid_by AS paidBy, date AS date from expense where expenses_amount is not null and expenses_amount !='' and expenses_amount !='0' order by date desc;");		
+										+ "paid_by AS paidBy, date AS date from expenses where expenses_amount is not null and expenses_amount !='' and expenses_amount !='0' order by date desc;");		
 		}catch(EmptyResultDataAccessException e) {
 			return new ArrayList<>();
 		}

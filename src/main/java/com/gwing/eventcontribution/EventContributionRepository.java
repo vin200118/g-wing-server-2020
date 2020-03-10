@@ -108,10 +108,10 @@ public class EventContributionRepository {
 		}
 		try( Connection con = jdbcTemplate.getDataSource().getConnection();
 				PreparedStatement st = con.prepareStatement(
-						"SELECT event_cont_id AS eventContriId,flat_no AS flatNo, "
-								+ "event_id AS eventId, event_cont_amt AS eventContriAmount, "
-								+ "event_cont_paid_amt AS eventContriPaidAmount, event_cont_date AS eventContriDate,"
-								+ "paid_to AS paidToFlatNo FROM event_contribution where event_id IN ("+eventIdlist+") AND flat_no=?")){
+						"SELECT ec.event_cont_id AS eventContriId,ec.flat_no AS flatNo, "
+								+ "ec.event_id AS eventId,(SELECT event_name AS eventName, cost FROM event where event_id=ec.event_id), ec.event_cont_amt AS eventContriAmount, "
+								+ "ec.event_cont_paid_amt AS eventContriPaidAmount, ec.event_cont_date AS eventContriDate,"
+								+ "ec.paid_to AS paidToFlatNo FROM event_contribution ec where ec.event_id IN ("+eventIdlist+") AND ec.flat_no=?")){
 				st.setString(1, flatNo);
 				 try (ResultSet rs = st.executeQuery()) {
 		                while (rs.next()) {
@@ -123,6 +123,8 @@ public class EventContributionRepository {
 		                	map.put("eventContriPaidAmount".toLowerCase(), rs.getString("eventContriPaidAmount".toLowerCase()));
 		                	map.put("eventContriDate".toLowerCase(), rs.getString("eventContriDate".toLowerCase()));
 		                	map.put("paidToFlatNo".toLowerCase(), rs.getString("paidToFlatNo".toLowerCase()));
+		                	map.put("eventName".toLowerCase(), rs.getString("eventName".toLowerCase()));
+		                	map.put("cost".toLowerCase(), rs.getString("cost".toLowerCase()));
 		                	result.add(map);
 		                }
 		          }

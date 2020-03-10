@@ -68,7 +68,7 @@ public class EventContributionController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "eventcontribution/flatNo/{flatNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "eventcontribution/flatno/{flatNo}", method = RequestMethod.GET)
 	public ResponseEntity<?> getFlatContributionDetailsForAllEvents(@PathVariable String flatNo) throws SQLException {
 		try {	
 			return new ResponseEntity<List<Map<String, Object>>>(eventContributionService.getFlatContriDetailsByFlatAndEventIds(flatNo), HttpStatus.OK);
@@ -78,5 +78,16 @@ public class EventContributionController {
 			          HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	@CrossOrigin
+	@RequestMapping(value = "eventcontribution/total", method = RequestMethod.GET)
+	public ResponseEntity<?> getEventsAndExpensesTotals() throws SQLException {
+		try {	
+			return new ResponseEntity<Map<String, Object>>(eventContributionService.getEventsAndExpensesTotals(), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"No data found", 
+			          HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

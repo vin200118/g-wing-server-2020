@@ -3,6 +3,7 @@ package com.gwing.eventcontribution;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,16 +15,20 @@ import org.springframework.util.StringUtils;
 
 import com.gwing.event.Event;
 import com.gwing.event.EventRepository;
+import com.gwing.expenses.ExpensesRepository;
 
 @Service
 public class EventContributionService {
 	public static final Logger logger = LoggerFactory.getLogger(EventContributionService.class);
 	private EventContributionRepository repository;
 	private EventRepository eventRepository;
+	private ExpensesRepository expensesRepository;
 	
-	public EventContributionService(@Autowired EventContributionRepository repository, @Autowired EventRepository eventRepository) {
+	public EventContributionService(@Autowired EventContributionRepository repository, @Autowired EventRepository eventRepository,
+			@Autowired ExpensesRepository expensesRepository) {
 		this.repository = repository;
 		this.eventRepository = eventRepository;
+		this.expensesRepository = expensesRepository;
 	}
 
 	public void save(EventContributionModel eventContrib) {
@@ -101,6 +106,36 @@ public class EventContributionService {
 
 	public List<Map<String, Object>> getAllFlatContributionDetails(int eventId) {
 		return repository.getAllFlatContriDetailsByEventId(eventId);
+	}
+	
+	public Map<String, Object> getEventsAndExpensesTotals() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Map<String, Object>> eventResultList = new ArrayList<Map<String,Object>>();
+		for(Map<String, Object> eventMap : eventRepository.getAllEvents()) {
+			List<Map<String, Object>> eventContriMap = repository.getAllFlatContriDetailsByEventId(Integer.parseInt(eventMap.get("eventid").toString()));
+			if(!eventContriMap.isEmpty()) {
+				int totalAmountContributed=0;
+				int totalFlatCount = 0;
+				int eventContriAmount = 0;
+				 for(Map<String, Object> map : eventContriMap) {
+					 eventContriAmount=Integer.parseInt(map.get("eventContriAmount").toString());
+					 totalFlatCount+=1;
+					 totalAmountContributed += !StringUtils.isEmpty(map.get("eventContriPaidAmount")) ? 0: Integer.parseInt(map.get("eventContriPaidAmount").toString());
+				 }
+				 eventMap.put("totalFlatCount", totalFlatCount);
+				 eventMap.put("eventContriAmount", eventContriAmount);
+				 eventMap.put("totalAmountContributed", totalAmountContributed);
+				 eventResultList.add(eventMap);
+			}
+		}
+		result.put("eventAllDetails",eventResultList);
+		List<Map<String, Object>> expList = expensesRepository.getAllExpense();
+		int totalExpenses = 0;
+		for(Map<String, Object> map : expList) {
+			totalExpenses += !StringUtils.isEmpty(map.get("expensesAmt")) ? 0: Integer.parseInt(map.get("expensesAmt").toString());
+		}
+		result.put("totalExpenses",totalExpenses);
+		return result;
 	}
 	
 	public List<Map<String, Object>> isAnyFlatOwnerPaidContriForEvent(int eventId){

@@ -120,7 +120,7 @@ public class EventContributionService {
 				 for(Map<String, Object> map : eventContriMap) {
 					 eventContriAmount=Integer.parseInt(map.get("eventContriAmount").toString());
 					 totalFlatCount+=1;
-					 totalAmountContributed += !StringUtils.isEmpty(map.get("eventContriPaidAmount")) ?Integer.parseInt(map.get("eventContriPaidAmount").toString()):0;
+					 totalAmountContributed += !StringUtils.isEmpty(map.get("eventContriPaidAmount")) ? Integer.parseInt(map.get("eventContriPaidAmount").toString()):0;
 				 }
 				 eventMap.put("totalFlatCount", totalFlatCount);
 				 eventMap.put("eventContriAmount", eventContriAmount);

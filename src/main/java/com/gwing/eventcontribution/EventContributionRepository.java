@@ -109,7 +109,8 @@ public class EventContributionRepository {
 		try( Connection con = jdbcTemplate.getDataSource().getConnection();
 				PreparedStatement st = con.prepareStatement(
 						"SELECT ec.event_cont_id AS eventContriId,ec.flat_no AS flatNo, "
-								+ "ec.event_id AS eventId,(SELECT event_name AS eventName, cost FROM event where event_id=ec.event_id), ec.event_cont_amt AS eventContriAmount, "
+								+ "ec.event_id AS eventId,(SELECT event_name AS eventName FROM event where event_id=ec.event_id),"
+								+ "(SELECT cost FROM event where event_id=ec.event_id), ec.event_cont_amt AS eventContriAmount, "
 								+ "ec.event_cont_paid_amt AS eventContriPaidAmount, ec.event_cont_date AS eventContriDate,"
 								+ "ec.paid_to AS paidToFlatNo FROM event_contribution ec where ec.event_id IN ("+eventIdlist+") AND ec.flat_no=?")){
 				st.setString(1, flatNo);

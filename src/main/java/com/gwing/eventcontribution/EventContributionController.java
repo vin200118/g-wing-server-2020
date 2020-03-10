@@ -68,7 +68,7 @@ public class EventContributionController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "eventcontribution/{flatNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "eventcontribution/flatNo/{flatNo}", method = RequestMethod.GET)
 	public ResponseEntity<?> getFlatContributionDetailsForAllEvents(@PathVariable String flatNo) throws SQLException {
 		try {	
 			return new ResponseEntity<List<Map<String, Object>>>(eventContributionService.getFlatContriDetailsByFlatAndEventIds(flatNo), HttpStatus.OK);

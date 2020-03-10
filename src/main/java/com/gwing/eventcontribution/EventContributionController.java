@@ -66,5 +66,17 @@ public class EventContributionController {
 			          HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "eventcontribution/{flatNo}", method = RequestMethod.GET)
+	public ResponseEntity<?> getFlatContributionDetailsForAllEvents(@PathVariable String flatNo) throws SQLException {
+		try {	
+			return new ResponseEntity<List<Map<String, Object>>>(eventContributionService.getFlatContriDetailsByFlatAndEventIds(flatNo), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"No data found", 
+			          HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }

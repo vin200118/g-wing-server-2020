@@ -1,6 +1,7 @@
 package com.gwing.eventcontribution;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,14 @@ public class EventContributionService {
 
 	public Map<String, Object> getFlatContriDetailsByFlatAndEventId(int eventId, String flatNo) {
 		return repository.getFlatContriDetailsByFlatAndEventId(eventId, flatNo);
+	}
+	
+	public List<Map<String, Object>> getFlatContriDetailsByFlatAndEventIds(String flatNo) throws SQLException {
+		List<Integer> eventIds = new ArrayList<Integer>();
+		for(Map<String, Object> map :eventRepository.getAllEvents()) {
+			eventIds.add(Integer.parseInt(map.get("eventid").toString()));
+		}
+		return repository.getFlatContriDetailsByFlatAndEventIds(eventIds, flatNo);
 	}
 
 }

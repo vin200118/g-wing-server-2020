@@ -132,7 +132,7 @@ public class EventContributionService {
 		List<Map<String, Object>> expList = expensesRepository.getAllExpense();
 		int totalExpenses = 0;
 		for(Map<String, Object> map : expList) {
-			totalExpenses += !StringUtils.isEmpty(map.get("expensesAmt")) ? 0: Integer.parseInt(map.get("expensesAmt").toString());
+			totalExpenses += !StringUtils.isEmpty(map.get("expensesAmt")) ? Integer.parseInt(map.get("expensesAmt").toString()):0;
 		}
 		result.put("totalExpenses",totalExpenses);
 		return result;

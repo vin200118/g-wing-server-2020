@@ -102,7 +102,7 @@ public class EventContributionRepository {
 								+ "event_id AS eventId, event_cont_amt AS eventContriAmount, "
 								+ "event_cont_paid_amt AS eventContriPaidAmount, event_cont_date AS eventContriDate,"
 								+ "paid_to AS paidToFlatNo FROM event_contribution where event_id in (?) AND flat_no=?")){
-			 	Array tagIdsInArray = con.createArrayOf("integer", eventIds.toArray());
+			 	Array tagIdsInArray = con.createArrayOf("smallint", eventIds.toArray());
 			 	st.setArray(1, tagIdsInArray);
 				st.setString(2, flatNo);
 				 try (ResultSet rs = st.executeQuery()) {
